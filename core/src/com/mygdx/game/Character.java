@@ -6,6 +6,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
+/**
+ * Created by luke on 2016-04-20.
+ */
+
 public class Character {
     Rectangle recHB;
     Sprite sprGengar;

@@ -3,6 +3,7 @@ package com.mygdx.game.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -26,6 +27,7 @@ public class ScrMenu implements Screen, InputProcessor {
     Stage stage;
     SpriteBatch batch;
     BitmapFont screenName;
+    Music sound8bit;
 
     public ScrMenu(Main main) {  //Referencing the main class.
         this.main = main;
@@ -44,6 +46,9 @@ public class ScrMenu implements Screen, InputProcessor {
         tbPlay.setX(440);
         stage.addActor(tbPlay);
         stage.addActor(tbGameover);
+        sound8bit = Gdx.audio.newMusic(Gdx.files.internal("8bit4.wav"));
+        sound8bit.play();
+        sound8bit.setLooping(true);
         Gdx.input.setInputProcessor(stage);
         btnPlayListener();
         btnGameoverListener();
@@ -64,6 +69,7 @@ public class ScrMenu implements Screen, InputProcessor {
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                 main.currentState = Main.GameState.PLAY;
                 main.updateState();
+                sound8bit.stop();
             }
         });
     }
@@ -73,6 +79,7 @@ public class ScrMenu implements Screen, InputProcessor {
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                 main.currentState = Main.GameState.OVER;
                 main.updateState();
+                sound8bit.stop();
             }
         });
     }

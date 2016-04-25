@@ -18,7 +18,7 @@ import com.mygdx.game.TbsMenu;
 import com.mygdx.game.Character;
 
 /**
- * Created by luke on 2016-04-05.
+ * Created by luke on 2016-04-20.
  */
 public class ScrPlay implements Screen, InputProcessor {
     Main main;
@@ -89,15 +89,12 @@ public class ScrPlay implements Screen, InputProcessor {
             character.draw2(bChar);
         }
         bChar.end();
-
         recBDown = new Rectangle(0, 0, Gdx.graphics.getWidth(), 10);
         recBUp = new Rectangle(0, Gdx.graphics.getHeight() - 10, Gdx.graphics.getWidth(), 10);
         recBLeft = new Rectangle(0, 0, 10, Gdx.graphics.getHeight());
         recBRight = new Rectangle(Gdx.graphics.getWidth() - 10, 0, 10, Gdx.graphics.getHeight());
-
         //Updates
         character.update(Gdx.graphics.getDeltaTime());
-
         //Boundaries
         if (character.bounds(recBDown) == 1) {
             character.action(1, 0, 10);
@@ -105,7 +102,6 @@ public class ScrPlay implements Screen, InputProcessor {
                 character.jump();
             }
         }
-
         if (character.bounds(recBUp) == 1) {
             character.action(4, 0, Gdx.graphics.getHeight() - 10);
         }

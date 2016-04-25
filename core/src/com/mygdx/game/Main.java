@@ -1,8 +1,6 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.mygdx.game.Screens.ScrMenu;
 import com.mygdx.game.Screens.ScrPlay;
 import com.mygdx.game.Screens.ScrGameover;
@@ -15,7 +13,6 @@ public class Main extends Game {
     ScrMenu scrMenu;
     ScrPlay scrPlay;
     ScrGameover scrGameover;
-    Music sound8bit;
 
     public enum GameState {
         MENU, PLAY, OVER
@@ -35,8 +32,6 @@ public class Main extends Game {
 
     @Override
     public void create() {
-        sound8bit = Gdx.audio.newMusic(Gdx.files.internal("8bit4.wav"));
-        sound8bit.play();
         scrMenu = new ScrMenu(this);
         scrPlay = new ScrPlay(this);
         scrGameover = new ScrGameover(this);

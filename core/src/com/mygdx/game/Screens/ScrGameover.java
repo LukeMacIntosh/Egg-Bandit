@@ -14,7 +14,7 @@ import com.mygdx.game.TbMenu;
 import com.mygdx.game.TbsMenu;
 
 /**
- * Created by luke on 2016-04-05.
+ * Created by luke on 2016-04-20.
  */
 public class ScrGameover implements Screen, InputProcessor {
     Main main;
