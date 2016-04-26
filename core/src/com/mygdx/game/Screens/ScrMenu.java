@@ -40,10 +40,11 @@ public class ScrMenu implements Screen, InputProcessor {
         screenName = new BitmapFont();
         tbPlay = new TbMenu("PLAY", tbsMenu);
         tbGameover = new TbMenu("BACK", tbsMenu);
-        tbGameover.setY(400);
+        screenName.getData().setScale(4, 4);
+        tbGameover.setY(825);
         tbGameover.setX(0);
-        tbPlay.setY(400);
-        tbPlay.setX(440);
+        tbPlay.setY(825);
+        tbPlay.setX(1200);
         stage.addActor(tbPlay);
         stage.addActor(tbGameover);
         sound8bit = Gdx.audio.newMusic(Gdx.files.internal("8bit4.wav"));
@@ -58,7 +59,7 @@ public class ScrMenu implements Screen, InputProcessor {
         Gdx.gl.glClearColor(0, 1, 0, 1); //Green background.
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        screenName.draw(batch, "This is the MENU screen", 230, 275);
+        screenName.draw(batch, "This is the MENU screen", 600, 600);
         batch.end();
         stage.act();
         stage.draw();

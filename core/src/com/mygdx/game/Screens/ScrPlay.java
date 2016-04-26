@@ -46,12 +46,13 @@ public class ScrPlay implements Screen, InputProcessor {
         bChar = new SpriteBatch();
         character = new Character();
         screenName = new BitmapFont();
+        screenName.getData().setScale(4, 4);
         tbMenu = new TbMenu("BACK", tbsMenu);
         tbGameover = new TbMenu("GAMEOVER", tbsMenu);
-        tbMenu.setY(400);
+        tbMenu.setY(825);
         tbMenu.setX(0);
-        tbGameover.setY(400);
-        tbGameover.setX(440);
+        tbGameover.setY(825);
+        tbGameover.setX(1200);
         character.setPosition(200, 100);
         stage.addActor(tbMenu);
         stage.addActor(tbGameover);
@@ -124,7 +125,7 @@ public class ScrPlay implements Screen, InputProcessor {
             picID = 1;
         }
         batch.begin();
-        screenName.draw(batch, "This is the PLAY screen", 230, 275);
+        screenName.draw(batch, "This is the PLAY screen", 600, 600);
         batch.end();
         stage.act();
         stage.draw();
