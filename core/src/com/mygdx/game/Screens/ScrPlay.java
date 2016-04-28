@@ -45,8 +45,7 @@ public class ScrPlay implements Screen, InputProcessor {
         ocCam.setToOrtho(false);
         bChar = new SpriteBatch();
         character = new Character();
-        screenName = new BitmapFont();
-        screenName.getData().setScale(4, 4);
+        screenName = new BitmapFont(Gdx.files.internal("label.fnt"));
         tbMenu = new TbMenu("BACK", tbsMenu);
         tbGameover = new TbMenu("GAMEOVER", tbsMenu);
         tbMenu.setY(825);
@@ -125,7 +124,7 @@ public class ScrPlay implements Screen, InputProcessor {
             picID = 1;
         }
         batch.begin();
-        screenName.draw(batch, "This is the PLAY screen", 600, 600);
+        screenName.draw(batch, "This is the PLAY screen", 400, 700);
         batch.end();
         stage.act();
         stage.draw();
