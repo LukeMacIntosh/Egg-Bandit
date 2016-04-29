@@ -113,7 +113,7 @@ public class ScrPlay implements Screen, InputProcessor {
             character.action(3, Gdx.graphics.getWidth() - 10, 0);
         }
 
-        //Android Controls
+        //Android Controlss
         if (isTouchingL) {
             character.moveLeft(Gdx.graphics.getDeltaTime());
             picID = 2;
