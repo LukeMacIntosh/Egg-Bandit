@@ -23,7 +23,7 @@ import java.awt.Font;
 public class ScrMenu implements Screen, InputProcessor {
     Main main;
     TbsMenu tbsMenu;
-    TbMenu tbPlay, tbGameover;
+    TbMenu tbPlay;
     Stage stage;
     SpriteBatch batch;
     BitmapFont screenName;
@@ -39,26 +39,22 @@ public class ScrMenu implements Screen, InputProcessor {
         batch = new SpriteBatch();
         screenName = new BitmapFont(Gdx.files.internal("label.fnt"));
         tbPlay = new TbMenu("PLAY", tbsMenu);
-        tbGameover = new TbMenu("BACK", tbsMenu);
-        tbGameover.setY(825);
-        tbGameover.setX(0);
-        tbPlay.setY(825);
-        tbPlay.setX(1200);
+        tbPlay.setY(200);
+        tbPlay.setX(600);
         stage.addActor(tbPlay);
-        stage.addActor(tbGameover);
         sound8bit = Gdx.audio.newMusic(Gdx.files.internal("8bit4.wav"));
         sound8bit.play();
         sound8bit.setLooping(true);
         Gdx.input.setInputProcessor(stage);
         btnPlayListener();
-        btnGameoverListener();
+        //btnGameoverListener();
     }
 
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 1, 0, 1); //Green background.
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        screenName.draw(batch, "This is the MENU screen", 400, 700);
+        screenName.draw(batch, "MENU", 800, 1000);
         batch.end();
         stage.act();
         stage.draw();
@@ -74,7 +70,7 @@ public class ScrMenu implements Screen, InputProcessor {
         });
     }
 
-    public void btnGameoverListener() {
+    /*public void btnGameoverListener() {
         tbGameover.addListener(new ChangeListener() {
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                 main.currentState = Main.GameState.OVER;
@@ -83,6 +79,7 @@ public class ScrMenu implements Screen, InputProcessor {
             }
         });
     }
+    */
 
     @Override
     public void resize(int width, int height) {

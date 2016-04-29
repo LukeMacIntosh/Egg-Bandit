@@ -19,7 +19,7 @@ import com.mygdx.game.TbsMenu;
 public class ScrGameover implements Screen, InputProcessor {
     Main main;
     TbsMenu tbsMenu;
-    TbMenu tbPlay, tbMenu;
+    TbMenu tbMenu, tbPlay;
     Stage stage;
     SpriteBatch batch;
     BitmapFont screenName;
@@ -33,12 +33,12 @@ public class ScrGameover implements Screen, InputProcessor {
         tbsMenu = new TbsMenu();
         batch = new SpriteBatch();
         screenName = new BitmapFont(Gdx.files.internal("label.fnt"));
-        tbPlay = new TbMenu("BACK", tbsMenu);
         tbMenu = new TbMenu("MENU", tbsMenu);
-        tbPlay.setY(825);
-        tbPlay.setX(0);
-        tbMenu.setY(825);
-        tbMenu.setX(1200);
+        tbPlay = new TbMenu("RETRY", tbsMenu);
+        tbMenu.setY(400);
+        tbMenu.setX(700);
+        tbPlay.setY(100);
+        tbPlay.setX(700);
         stage.addActor(tbMenu);
         stage.addActor(tbPlay);
         Gdx.input.setInputProcessor(stage);
@@ -50,7 +50,7 @@ public class ScrGameover implements Screen, InputProcessor {
         Gdx.gl.glClearColor(0, 0, 0, 1); //black background.
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        screenName.draw(batch, "This is the GAMEOVER screen", 400, 700);
+        screenName.draw(batch, "GAMEOVER", Gdx.graphics.getWidth() / 2 - 110, 1000);
         batch.end();
         stage.act();
         stage.draw();

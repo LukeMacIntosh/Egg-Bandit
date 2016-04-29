@@ -5,22 +5,21 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-
-/**
- * Created by luke on 2016-04-20.
- */
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 public class Character {
-    Rectangle recHB;
+    public Rectangle recHB;
     Sprite sprGengar;
     Texture txrReg, txrFlip;
     float fGravity;
+    public boolean isGrounded = false;
+    public int nSpeed = 300;
 
     public Character() {
         txrReg = new Texture("gengar.png");
         txrFlip = new Texture("gengarf.png");
         sprGengar = new Sprite(txrReg, 0, 0, 128, 128);
-        sprGengar.setSize(Gdx.graphics.getWidth() / 5, Gdx.graphics.getWidth() / 5);
+        sprGengar.setSize(Gdx.graphics.getHeight()/4, Gdx.graphics.getHeight()/4);
         recHB = new Rectangle(0f, 0f, sprGengar.getWidth(), sprGengar.getHeight());
         this.setPosition(0, 0);
         fGravity = 0;
@@ -37,12 +36,15 @@ public class Character {
         if (type == 1) {
             setPosition(recHB.x, y);
             fGravity = 0;
-        } else if (type == 2) {
+        }
+        else if (type == 2) {
             setPosition(x, recHB.y);
-        } else if (type == 3) {
+        }
+        else if (type == 3) {
             x -= sprGengar.getWidth();
             setPosition(x, recHB.y);
-        } else if (type == 4) {
+        }
+        else if (type == 4) {
             y -= sprGengar.getHeight();
             setPosition(recHB.x, y);
         }
@@ -62,12 +64,12 @@ public class Character {
     }
 
     public void moveLeft(float delta) {
-        recHB.x -= (200 * delta);
+        recHB.x -= (nSpeed * delta);
         sprGengar.setPosition(recHB.x, recHB.y);
     }
 
     public void moveRight(float delta) {
-        recHB.x += (200 * delta);
+        recHB.x += (nSpeed * delta);
         sprGengar.setPosition(recHB.x, recHB.y);
     }
 
@@ -84,5 +86,7 @@ public class Character {
     public void jump() {
         //add jump height
         fGravity = 15;
+        isGrounded = false;
+        nSpeed = 300; //air speed
     }
 }
