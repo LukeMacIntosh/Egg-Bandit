@@ -39,7 +39,6 @@ public class ScrMenu implements Screen, InputProcessor {
     Music sound8bit;
     Viewport viewport;
     OrthographicCamera ocCam;
-    int nHei = 1080, nWid = 1920;
     float fGameworldWidth = 1920, fGameworldHeight = 1080;
     public static Texture backgroundTexture;
     public static Sprite backgroundSprite;
