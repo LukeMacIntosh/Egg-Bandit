@@ -56,7 +56,7 @@ public class ScrPlay implements Screen, InputProcessor {
     }
 
     public void show() {
-        backgroundTexture = new Texture("play.jpg");
+        backgroundTexture = new Texture("Play.jpg");
         backgroundSprite = new Sprite(backgroundTexture);
         stage = new Stage();
         tbsMenu = new TbsMenu();
@@ -172,16 +172,15 @@ public class ScrPlay implements Screen, InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         System.out.println("1");
-        if (screenX < nWid / 2 && screenY > nHei / 2) {
+        if (screenX < nWid / 2) {
+            isTouchingR = false;
             isTouchingL = true;
             System.out.println("left");
         }
-        if (screenX > nWid / 2 && screenY > nHei / 2) {
+        if (screenX > nWid / 2) {
+            isTouchingL = false;
             isTouchingR = true;
             System.out.println("right");
-        }
-        if (screenY < nHei / 2 && character.isGrounded == true) {
-            character.jump();
         }
         return false;
     }
@@ -224,8 +223,14 @@ public class ScrPlay implements Screen, InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        isTouchingL = false;
-        isTouchingR = false;
+        if (screenX < nWid / 2) {
+            isTouchingL = false;
+            System.out.println("left stop");
+        }
+        if (screenX > nWid / 2) {
+            isTouchingR = false;
+            System.out.println("right stop");
+        }
         return false;
     }
 
