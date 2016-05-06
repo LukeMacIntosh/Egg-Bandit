@@ -4,12 +4,21 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Main;
 import com.mygdx.game.TbMenu;
 import com.mygdx.game.TbsMenu;
@@ -28,33 +37,60 @@ public class ScrMenu implements Screen, InputProcessor {
     SpriteBatch batch;
     BitmapFont screenName;
     Music sound8bit;
+    Viewport viewport;
+    OrthographicCamera ocCam;
+    int nHei = 1080, nWid = 1920;
+    float fGameworldWidth = 1920, fGameworldHeight = 1080;
+    public static Texture backgroundTexture;
+    public static Sprite backgroundSprite;
 
     public ScrMenu(Main main) {  //Referencing the main class.
         this.main = main;
     }
 
     public void show() {
+        ocCam = new OrthographicCamera();
+        ocCam.setToOrtho(false);
+        viewport = new FillViewport(fGameworldWidth, fGameworldHeight, ocCam);
+        viewport.apply();
+        ocCam.position.set(fGameworldWidth / 2, fGameworldHeight / 2, 0);
         stage = new Stage();
         tbsMenu = new TbsMenu();
         batch = new SpriteBatch();
+        backgroundTexture = new Texture("background2.jpg");
+        backgroundSprite = new Sprite(backgroundTexture);
         screenName = new BitmapFont(Gdx.files.internal("label.fnt"));
+        screenName.getData().setScale(2, 2);
+        screenName.setColor(Color.BLUE);
         tbPlay = new TbMenu("PLAY", tbsMenu);
-        tbPlay.setY(200);
-        tbPlay.setX(600);
+        tbPlay.setY(nHei / 2);
+        tbPlay.setX(nWid / 2 - 50);
         stage.addActor(tbPlay);
         sound8bit = Gdx.audio.newMusic(Gdx.files.internal("8bit4.wav"));
         sound8bit.play();
         sound8bit.setLooping(true);
         Gdx.input.setInputProcessor(stage);
         btnPlayListener();
-        //btnGameoverListener();
+    }
+
+    public void renderBackground() {
+        backgroundSprite.draw(batch);
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        viewport.update(width, height);
+        ocCam.position.set(fGameworldWidth / 2, fGameworldHeight / 2, 0);
     }
 
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 1, 0, 1); //Green background.
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        ocCam.update();
+        batch.setProjectionMatrix(ocCam.combined);
         batch.begin();
-        screenName.draw(batch, "MENU", 800, 1000);
+        renderBackground();
+        screenName.draw(batch, "SF GAME", 600, 1000);
         batch.end();
         stage.act();
         stage.draw();
@@ -68,22 +104,6 @@ public class ScrMenu implements Screen, InputProcessor {
                 sound8bit.stop();
             }
         });
-    }
-
-    /*public void btnGameoverListener() {
-        tbGameover.addListener(new ChangeListener() {
-            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-                main.currentState = Main.GameState.OVER;
-                main.updateState();
-                sound8bit.stop();
-            }
-        });
-    }
-    */
-
-    @Override
-    public void resize(int width, int height) {
-
     }
 
     @Override

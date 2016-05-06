@@ -13,14 +13,18 @@ public class Character {
     Texture txrReg, txrFlip;
     float fGravity;
     public boolean isGrounded = false;
-    public int nSpeed = 300;
+    public int nSpeed = 300, nLeniency;
+    int nHei = 1080, nWid = 1920;
+
 
     public Character() {
         txrReg = new Texture("gengar.png");
         txrFlip = new Texture("gengarf.png");
         sprGengar = new Sprite(txrReg, 0, 0, 128, 128);
-        sprGengar.setSize(Gdx.graphics.getHeight()/4, Gdx.graphics.getHeight()/4);
-        recHB = new Rectangle(0f, 0f, sprGengar.getWidth(), sprGengar.getHeight());
+        sprGengar.setSize(nWid/10, nWid/10);
+        nLeniency = 30;
+        recHB = new Rectangle(0f, 0f, sprGengar.getWidth() - nLeniency,
+                sprGengar.getHeight() - nLeniency);
         this.setPosition(0, 0);
         fGravity = 0;
     }
@@ -41,7 +45,7 @@ public class Character {
             setPosition(x, recHB.y);
         }
         else if (type == 3) {
-            x -= sprGengar.getWidth();
+            x -= sprGengar.getWidth() - nLeniency;
             setPosition(x, recHB.y);
         }
         else if (type == 4) {
@@ -54,23 +58,23 @@ public class Character {
         //fGravity = gravity strength
         fGravity -= (40 * delta);
         recHB.y += fGravity;
-        sprGengar.setPosition(recHB.x, recHB.y);
+        sprGengar.setPosition(recHB.x - (nLeniency / 2), recHB.y - (nLeniency / 2));
     }
 
     public void setPosition(float x, float y) {
         recHB.x = x;
         recHB.y = y;
-        sprGengar.setPosition(x, y);
+        sprGengar.setPosition(x - (nLeniency / 2), y - (nLeniency / 2));
     }
 
     public void moveLeft(float delta) {
         recHB.x -= (nSpeed * delta);
-        sprGengar.setPosition(recHB.x, recHB.y);
+        sprGengar.setPosition(recHB.x - (nLeniency / 2), recHB.y - (nLeniency / 2));
     }
 
     public void moveRight(float delta) {
         recHB.x += (nSpeed * delta);
-        sprGengar.setPosition(recHB.x, recHB.y);
+        sprGengar.setPosition(recHB.x - (nLeniency / 2), recHB.y - (nLeniency / 2));
     }
 
     public void draw1(SpriteBatch batch) {
@@ -85,8 +89,8 @@ public class Character {
 
     public void jump() {
         //add jump height
-        fGravity = 15;
+        fGravity = 33;
         isGrounded = false;
-        nSpeed = 300; //air speed
+        nSpeed = 500; //air speed
     }
 }

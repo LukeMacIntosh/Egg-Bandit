@@ -4,19 +4,31 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScalingViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Main;
 import com.mygdx.game.Obstacle;
 import com.mygdx.game.TbMenu;
 import com.mygdx.game.TbsMenu;
 import com.mygdx.game.Character;
+import com.mygdx.game.Screens.ScrGameover;
 
 /**
  * Created by luke on 2016-04-20.
@@ -31,63 +43,65 @@ public class ScrPlay implements Screen, InputProcessor {
     Rectangle recBDown, recBUp, recBLeft, recBRight;
     Character character;
     Obstacle obstacle;
-    int picID = 1, gdxW, gdxH;
+    Viewport viewport;
+    float fGameworldWidth = 1920, fGameworldHeight = 1080;
+    int picID = 1, nHei = 1080, nWid = 1920;
     boolean isTouchingL = false, isTouchingR = false;
+    public static Texture backgroundTexture;
+    public static Sprite backgroundSprite;
 
     public ScrPlay(Main Main) {  //Referencing the main class.
         this.main = Main;
     }
 
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        System.out.println("1");
-        if (screenX < gdxW / 2 && screenY > gdxH / 2) {
-            isTouchingL = true;
-            System.out.println("left");
-        }
-        if (screenX > gdxW / 2 && screenY > gdxH / 2) {
-            isTouchingR = true;
-            System.out.println("right");
-        }
-        if (screenY < gdxH / 2 && character.isGrounded == true) {
-            character.jump();
-        }
-        return false;
-    }
-
     public void show() {
-        gdxW = Gdx.graphics.getWidth();
-        gdxH = Gdx.graphics.getHeight();
+        backgroundTexture = new Texture("background2.jpg");
+        backgroundSprite = new Sprite(backgroundTexture);
         stage = new Stage();
         tbsMenu = new TbsMenu();
         sbChar = new SpriteBatch();
         ocCam = new OrthographicCamera();
         ocCam.setToOrtho(false);
+        viewport = new FillViewport(fGameworldWidth, fGameworldHeight, ocCam); //
+        viewport.apply();
+        ocCam.position.set(fGameworldWidth / 2, fGameworldHeight / 2, 0);
         character = new Character();
         obstacle = new Obstacle();
-        System.out.println(gdxW + "" + gdxH);
         bmLives = new BitmapFont(Gdx.files.internal("label.fnt"));
-        character.setPosition(gdxW/2 - 64, 11);
+        bmLives.setColor(Color.RED);
+        character.setPosition(nWid / 2 - 64, 11);
         Gdx.input.setInputProcessor(stage);
         Gdx.input.setInputProcessor(this);
-        recBDown = new Rectangle(0, 0, gdxW, 10);
-        recBUp = new Rectangle(0, gdxH - 10, gdxW, 10);
-        recBLeft = new Rectangle(0, 0, 10, gdxH);
-        recBRight = new Rectangle(gdxW - 10, 0, 10, gdxH);
+        recBDown = new Rectangle(0, 0, nWid, 10);
+        recBUp = new Rectangle(0, nHei - 10, nWid, 10);
+        recBLeft = new Rectangle(0, 0, 10, nHei);
+        recBRight = new Rectangle(nWid - 10, 0, 10, nHei);
+    }
+
+    public void renderBackground() {
+        backgroundSprite.draw(sbChar);
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        viewport.update(width, height);
+        ocCam.position.set(fGameworldWidth / 2, fGameworldHeight / 2, 0);
     }
 
     public void render(float delta) {
-        Gdx.gl.glClearColor(.135f, .206f, .235f, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         sbChar.setProjectionMatrix(ocCam.combined);
+        ocCam.update();
         sbChar.begin();
+        renderBackground();
         if (picID == 1) {
             character.draw1(sbChar);
         } else {
             character.draw2(sbChar);
         }
         obstacle.draw(sbChar);
-        bmLives.draw(sbChar, "Hearts collected " + Integer.toString(obstacle.nLives), gdxW - 1200, gdxH - 50);
+        bmLives.draw(sbChar, "Hearts collected: " + Integer.toString(obstacle.nLives), nWid - 1300, nHei - 50);
         sbChar.end();
 
         //updates
@@ -97,12 +111,12 @@ public class ScrPlay implements Screen, InputProcessor {
         if (character.bounds(recBDown) == 1) {
             character.action(1, 0, 10);
             character.isGrounded = true;
-            character.nSpeed = 300; //ground speed
+            character.nSpeed = nWid / 4; //ground speed
             if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
                 character.jump();
             }
         } else if (character.bounds(recBUp) == 1) {
-            character.action(4, 0, Gdx.graphics.getHeight() - 10);
+            character.action(4, 0, nHei - 10);
         }
 
         if (character.bounds(recBLeft) == 1) {
@@ -110,7 +124,7 @@ public class ScrPlay implements Screen, InputProcessor {
         }
 
         if (character.bounds(recBRight) == 1) {
-            character.action(3, Gdx.graphics.getWidth() - 10, 0);
+            character.action(3, nWid - 10, 0);
         }
 
         //Android Controlss
@@ -146,14 +160,26 @@ public class ScrPlay implements Screen, InputProcessor {
     }
 
     @Override
-    public void dispose() {
-        sbChar.dispose();
-        bmLives.dispose();
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        System.out.println("1");
+        if (screenX < nWid / 2 && screenY > nHei / 2) {
+            isTouchingL = true;
+            System.out.println("left");
+        }
+        if (screenX > nWid / 2 && screenY > nHei / 2) {
+            isTouchingR = true;
+            System.out.println("right");
+        }
+        if (screenY < nHei / 2 && character.isGrounded == true) {
+            character.jump();
+        }
+        return false;
     }
 
     @Override
-    public void resize(int width, int height) {
-
+    public void dispose() {
+        sbChar.dispose();
+        bmLives.dispose();
     }
 
     @Override
