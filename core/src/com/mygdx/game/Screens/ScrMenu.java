@@ -56,7 +56,7 @@ public class ScrMenu implements Screen, InputProcessor {
         stage = new Stage();
         tbsMenu = new TbsMenu();
         batch = new SpriteBatch();
-        backgroundTexture = new Texture("background2.jpg");
+        backgroundTexture = new Texture("menu.jpg");
         backgroundSprite = new Sprite(backgroundTexture);
         screenName = new BitmapFont(Gdx.files.internal("label.fnt"));
         screenName.getData().setScale(2, 2);

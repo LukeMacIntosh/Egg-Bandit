@@ -56,7 +56,7 @@ public class ScrPlay implements Screen, InputProcessor {
     }
 
     public void show() {
-        backgroundTexture = new Texture("background2.jpg");
+        backgroundTexture = new Texture("play.jpg");
         backgroundSprite = new Sprite(backgroundTexture);
         stage = new Stage();
         tbsMenu = new TbsMenu();

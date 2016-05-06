@@ -43,7 +43,7 @@ public class ScrGameover implements Screen, InputProcessor {
     }
 
     public void show() {
-        backgroundTexture = new Texture("background2.jpg");
+        backgroundTexture = new Texture("gameover.jpg");
         backgroundSprite = new Sprite(backgroundTexture);
         stage = new Stage();
         tbsMenu = new TbsMenu();
