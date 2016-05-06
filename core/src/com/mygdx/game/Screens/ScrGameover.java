@@ -61,10 +61,12 @@ public class ScrGameover implements Screen, InputProcessor {
         ocCam.position.set(fGameworldWidth / 2, fGameworldHeight / 2, 0);
         tbMenu = new TbMenu("MENU", tbsMenu);
         tbPlay = new TbMenu("RETRY", tbsMenu);
-        tbMenu.setY(nHei / 10);
-        tbMenu.setX(nWid - 640);
-        tbPlay.setY(nHei / 10);
-        tbPlay.setX(nWid / 3);
+        tbMenu.setSize(Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() / 4);
+        tbMenu.setY(Gdx.graphics.getHeight()/9);
+        tbMenu.setX(Gdx.graphics.getWidth()/2);
+        tbPlay.setSize(Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() / 4);
+        tbPlay.setY(Gdx.graphics.getHeight()/9);
+        tbPlay.setX(Gdx.graphics.getWidth()/6);
         stage.addActor(tbMenu);
         stage.addActor(tbPlay);
         Gdx.input.setInputProcessor(stage);

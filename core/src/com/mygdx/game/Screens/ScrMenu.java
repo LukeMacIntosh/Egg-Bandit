@@ -63,8 +63,12 @@ public class ScrMenu implements Screen, InputProcessor {
         screenName.getData().setScale(2, 2);
         screenName.setColor(Color.BLUE);
         tbPlay = new TbMenu("PLAY", tbsMenu);
-        tbPlay.setY(nHei / 2);
-        tbPlay.setX(nWid / 2 - 50);
+        // Gdx.graphics.getWidth/Height is only necessary for the buttons
+        // We scaled the whole game using out nWid and nHei variables,
+        // but for some reason the buttons didnt like that and they need special treatment.
+        tbPlay.setSize(Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() / 4);
+        tbPlay.setY(Gdx.graphics.getHeight() / 2 - Gdx.graphics.getHeight() / 8);
+        tbPlay.setX(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 6);
         stage.addActor(tbPlay);
         sound8bit = Gdx.audio.newMusic(Gdx.files.internal("8bit4.wav"));
         sound8bit.play();
