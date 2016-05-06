@@ -114,7 +114,6 @@ public class ScrGameover implements Screen, InputProcessor {
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                 main.currentState = Main.GameState.PLAY;
                 main.updateState();
-                obstacle.nLives = 0;
             }
         });
     }

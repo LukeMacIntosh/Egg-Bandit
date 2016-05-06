@@ -49,6 +49,7 @@ public class ScrPlay implements Screen, InputProcessor {
     boolean isTouchingL = false, isTouchingR = false;
     public static Texture backgroundTexture;
     public static Sprite backgroundSprite;
+    float fTimer;
 
     public ScrPlay(Main Main) {  //Referencing the main class.
         this.main = Main;
@@ -76,6 +77,10 @@ public class ScrPlay implements Screen, InputProcessor {
         recBUp = new Rectangle(0, nHei - 10, nWid, 10);
         recBLeft = new Rectangle(0, 0, 10, nHei);
         recBRight = new Rectangle(nWid - 10, 0, 10, nHei);
+        fTimer = 0;
+        obstacle.nLives = 0;
+        isTouchingL = false;
+        isTouchingR = false;
     }
 
     public void renderBackground() {
@@ -95,6 +100,9 @@ public class ScrPlay implements Screen, InputProcessor {
         ocCam.update();
         sbChar.begin();
         renderBackground();
+
+        fTimer += Gdx.graphics.getDeltaTime();
+
         if (picID == 1) {
             character.draw1(sbChar);
         } else {
@@ -109,10 +117,12 @@ public class ScrPlay implements Screen, InputProcessor {
 
         //Boundaries
         if (character.bounds(recBDown) == 1) {
-            character.action(1, 0, 10);
-            character.isGrounded = true;
-            character.nSpeed = nWid / 4; //ground speed
-            if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+            if (fTimer < 3) {
+                character.action(1, 0, 10);
+                character.isGrounded = true;
+                character.nSpeed = nWid / 4;
+            }
+            else {
                 character.jump();
             }
         } else if (character.bounds(recBUp) == 1) {

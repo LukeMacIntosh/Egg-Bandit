@@ -29,8 +29,8 @@ public class Obstacle {
         sprHeart.setPosition(recHeartBox.x, recHeartBox.y);
 
         //range for random spike y coordinates
-        nLowRange = nWid / 4;
-        nHighRange = nHei * 2 / 3;
+        nLowRange = nWid / 6;
+        nHighRange = nHei * 5 / 6;
 
         txrSpike = new Texture("spikeball.png");
 

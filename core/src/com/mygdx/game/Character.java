@@ -1,11 +1,9 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 public class Character {
     public Rectangle recHB;
@@ -22,7 +20,7 @@ public class Character {
         txrFlip = new Texture("gengarf.png");
         sprGengar = new Sprite(txrReg, 0, 0, 128, 128);
         sprGengar.setSize(nWid/10, nWid/10);
-        nLeniency = 30;
+        nLeniency = 40;
         recHB = new Rectangle(0f, 0f, sprGengar.getWidth() - nLeniency,
                 sprGengar.getHeight() - nLeniency);
         this.setPosition(0, 0);
@@ -41,7 +39,7 @@ public class Character {
             setPosition(recHB.x, y);
             fGravity = 0;
         }
-        else if (type == 2) {
+        if (type == 2) {
             setPosition(x, recHB.y);
         }
         else if (type == 3) {
