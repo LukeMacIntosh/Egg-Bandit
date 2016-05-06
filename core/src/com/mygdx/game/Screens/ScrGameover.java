@@ -92,7 +92,7 @@ public class ScrGameover implements Screen, InputProcessor {
         batch.begin();
         renderBackground();
         screenName.draw(batch, "GAMEOVER", 525, 1000);
-        bmScore.draw(batch, "SCORE: " + Integer.toString(obstacle.nLives), 800, 750);
+        bmScore.draw(batch, "SCORE: " + Integer.toString(obstacle.nHearts), 800, 750);
         bmHighscore.draw(batch, "HIGH-SCORE: " + "999", 625, 500);
         batch.end();
         stage.act();
@@ -104,7 +104,7 @@ public class ScrGameover implements Screen, InputProcessor {
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                 main.currentState = Main.GameState.MENU;
                 main.updateState();
-                obstacle.nLives = 0;
+                obstacle.nHearts = 0;
             }
         });
     }

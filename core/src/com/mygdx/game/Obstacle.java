@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 public class Obstacle {
-    public static int nLives = 0;
+    public static int nHearts = 0;
     Rectangle recHeartBox;
     Sprite sprSpike, sprHeart;
     Texture txrSpike, txrHeart;
@@ -88,7 +88,7 @@ public class Obstacle {
             nRan = (int) Math.floor(Math.random() * (nWid - sprHeart.getWidth() + 1));
             sprHeart.setX(nRan);
             recHeartBox.setX(nRan);
-            nLives++;
+            nHearts++;
         } else {
             nHeartStatus = 0;
         }

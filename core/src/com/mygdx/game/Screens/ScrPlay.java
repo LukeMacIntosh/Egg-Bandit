@@ -38,7 +38,7 @@ public class ScrPlay implements Screen, InputProcessor {
     TbsMenu tbsMenu;
     Stage stage;
     SpriteBatch sbChar;
-    BitmapFont bmLives;
+    BitmapFont bmHearts;
     OrthographicCamera ocCam;
     Rectangle recBDown, recBUp, recBLeft, recBRight;
     Character character;
@@ -63,13 +63,13 @@ public class ScrPlay implements Screen, InputProcessor {
         sbChar = new SpriteBatch();
         ocCam = new OrthographicCamera();
         ocCam.setToOrtho(false);
-        viewport = new FillViewport(fGameworldWidth, fGameworldHeight, ocCam); //
+        viewport = new FillViewport(fGameworldWidth, fGameworldHeight, ocCam); // We tried FitViewport and StretchViewport and they didnt seem to work, but Fill did !
         viewport.apply();
         ocCam.position.set(fGameworldWidth / 2, fGameworldHeight / 2, 0);
         character = new Character();
         obstacle = new Obstacle();
-        bmLives = new BitmapFont(Gdx.files.internal("label.fnt"));
-        bmLives.setColor(Color.RED);
+        bmHearts = new BitmapFont(Gdx.files.internal("label.fnt"));
+        bmHearts.setColor(Color.RED);
         character.setPosition(nWid / 2 - 64, 11);
         Gdx.input.setInputProcessor(stage);
         Gdx.input.setInputProcessor(this);
@@ -78,7 +78,7 @@ public class ScrPlay implements Screen, InputProcessor {
         recBLeft = new Rectangle(0, 0, 10, nHei);
         recBRight = new Rectangle(nWid - 10, 0, 10, nHei);
         fTimer = 0;
-        obstacle.nLives = 0;
+        obstacle.nHearts = 0;
         isTouchingL = false;
         isTouchingR = false;
     }
@@ -109,7 +109,7 @@ public class ScrPlay implements Screen, InputProcessor {
             character.draw2(sbChar);
         }
         obstacle.draw(sbChar);
-        bmLives.draw(sbChar, "Hearts collected: " + Integer.toString(obstacle.nLives), nWid - 1300, nHei - 50);
+        bmHearts.draw(sbChar, "Hearts collected: " + Integer.toString(obstacle.nHearts), nWid - 1300, nHei - 50);
         sbChar.end();
 
         //updates
@@ -189,7 +189,7 @@ public class ScrPlay implements Screen, InputProcessor {
     @Override
     public void dispose() {
         sbChar.dispose();
-        bmLives.dispose();
+        bmHearts.dispose();
     }
 
     @Override
