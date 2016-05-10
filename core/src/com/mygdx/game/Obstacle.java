@@ -18,6 +18,7 @@ public class Obstacle {
     float fX, fY;
     Array<Sprite> asprSpike;
     Array<Rectangle> arecSpike;
+    public int nHighscore;
 
     public Obstacle() {
         txrHeart = new Texture("heart.png");
@@ -25,7 +26,7 @@ public class Obstacle {
         sprHeart.setSize(nWid / 15, nWid / 15);
         recHeartBox = new Rectangle(0f, 0f, sprHeart.getWidth(), sprHeart.getHeight());
         recHeartBox.x = (int) Math.floor(Math.random() * (nWid - sprHeart.getWidth() + 1));
-        recHeartBox.y = nHei * 3 / 4;
+        recHeartBox.y = nHei * 1 / 4;
         sprHeart.setPosition(recHeartBox.x, recHeartBox.y);
         nLeniency = 150;
 

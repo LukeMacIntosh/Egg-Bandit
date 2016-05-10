@@ -3,6 +3,7 @@ package com.mygdx.game.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -50,12 +51,17 @@ public class ScrPlay implements Screen, InputProcessor {
     public static Texture backgroundTexture;
     public static Sprite backgroundSprite;
     float fTimer;
+    Preferences prefs;
 
     public ScrPlay(Main Main) {  //Referencing the main class.
         this.main = Main;
     }
 
     public void show() {
+        prefs = Gdx.app.getPreferences("highscore");
+        if (!prefs.contains("highscore")) {
+            prefs.putInteger("highscore", 0);
+        }
         backgroundTexture = new Texture("Play.jpg");
         backgroundSprite = new Sprite(backgroundTexture);
         stage = new Stage();
@@ -158,6 +164,10 @@ public class ScrPlay implements Screen, InputProcessor {
 
         //spike hit detection, goes to game over screen
         if (obstacle.bounds(character.recHB)) {
+            if (prefs.getInteger("highscore") < obstacle.nHearts){
+                prefs.putInteger("highscore", obstacle.nHearts);
+                obstacle.nHighscore = prefs.getInteger("highscore");
+            }
             main.currentState = Main.GameState.OVER;
             main.updateState();
         }

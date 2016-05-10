@@ -93,7 +93,7 @@ public class ScrGameover implements Screen, InputProcessor {
         renderBackground();
         screenName.draw(batch, "GAMEOVER", 525, 1000);
         bmScore.draw(batch, "SCORE: " + Integer.toString(obstacle.nHearts), 800, 750);
-        bmHighscore.draw(batch, "HIGH-SCORE: " + "999", 625, 500);
+        bmHighscore.draw(batch, "HIGH-SCORE: " + obstacle.nHighscore, 625, 500);
         batch.end();
         stage.act();
         stage.draw();
