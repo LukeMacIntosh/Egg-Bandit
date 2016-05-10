@@ -46,7 +46,7 @@ public class ScrPlay implements Screen, InputProcessor {
     Viewport viewport;
     float fGameworldWidth = 1920, fGameworldHeight = 1080;
     int picID = 1, nHei = 1080, nWid = 1920;
-    boolean isTouchingL = false, isTouchingR = false;
+    boolean isTouching = false;
     public static Texture backgroundTexture;
     public static Sprite backgroundSprite;
     float fTimer;
@@ -79,8 +79,8 @@ public class ScrPlay implements Screen, InputProcessor {
         recBRight = new Rectangle(nWid - 10, 0, 10, nHei);
         fTimer = 0;
         obstacle.nHearts = 0;
-        isTouchingL = false;
-        isTouchingR = false;
+        isTouching = false;
+
     }
 
     public void renderBackground() {
@@ -121,8 +121,7 @@ public class ScrPlay implements Screen, InputProcessor {
                 character.action(1, 0, 10);
                 character.isGrounded = true;
                 character.nSpeed = nWid / 4;
-            }
-            else {
+            } else {
                 character.jump();
             }
         } else if (character.bounds(recBUp) == 1) {
@@ -137,15 +136,14 @@ public class ScrPlay implements Screen, InputProcessor {
             character.action(3, nWid - 10, 0);
         }
 
-        //Android Controlss
-        if (isTouchingL) {
-            character.moveLeft(Gdx.graphics.getDeltaTime());
-            picID = 2;
-        }
-        if (isTouchingR) {
-            character.moveRight(Gdx.graphics.getDeltaTime());
-            picID = 1;
-        }
+        //Android Controls
+            if (isTouching) {
+                character.moveRight(Gdx.graphics.getDeltaTime());
+                picID = 1;
+            } else {
+                character.moveLeft(Gdx.graphics.getDeltaTime());
+                picID = 2;
+            }
 
 
         //Keyboard Controls
@@ -158,7 +156,7 @@ public class ScrPlay implements Screen, InputProcessor {
             picID = 1;
         }
 
-        //spike hit detection, goes to gameover screen
+        //spike hit detection, goes to game over screen
         if (obstacle.bounds(character.recHB)) {
             main.currentState = Main.GameState.OVER;
             main.updateState();
@@ -171,17 +169,8 @@ public class ScrPlay implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        System.out.println("1");
-        if (screenX < nWid / 2) {
-            isTouchingR = false;
-            isTouchingL = true;
-            System.out.println("left");
-        }
-        if (screenX > nWid / 2) {
-            isTouchingL = false;
-            isTouchingR = true;
-            System.out.println("right");
-        }
+        System.out.println("touch");
+        isTouching = true;
         return false;
     }
 
@@ -223,14 +212,7 @@ public class ScrPlay implements Screen, InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if (screenX < nWid / 2) {
-            isTouchingL = false;
-            System.out.println("left stop");
-        }
-        if (screenX > nWid / 2) {
-            isTouchingR = false;
-            System.out.println("right stop");
-        }
+        isTouching = false;
         return false;
     }
 
