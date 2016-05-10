@@ -14,7 +14,7 @@ public class Obstacle {
     Sprite sprSpike, sprHeart;
     Texture txrSpike, txrHeart;
     int nSpikeStatus, nHeartStatus, nRan, nLowRange, nHighRange;
-    int nHei = 1080, nWid = 1920;
+    int nHei = 1080, nWid = 1920, nLeniency;
     float fX, fY;
     Array<Sprite> asprSpike;
     Array<Rectangle> arecSpike;
@@ -27,6 +27,7 @@ public class Obstacle {
         recHeartBox.x = (int) Math.floor(Math.random() * (nWid - sprHeart.getWidth() + 1));
         recHeartBox.y = nHei * 3 / 4;
         sprHeart.setPosition(recHeartBox.x, recHeartBox.y);
+        nLeniency = 150;
 
         //range for random spike y coordinates
         nLowRange = nWid / 6;
@@ -47,7 +48,7 @@ public class Obstacle {
         arecSpike = new Array<Rectangle>(false, 4);
         for (int i = 0; i < 4; i++) {
             arecSpike.add(new Rectangle());
-            arecSpike.get(i).setSize(asprSpike.get(i).getWidth(), asprSpike.get(i).getHeight());
+            arecSpike.get(i).setSize(asprSpike.get(i).getWidth() - (nLeniency), asprSpike.get(i).getHeight() - (nLeniency));
         }
     }
 
@@ -57,8 +58,8 @@ public class Obstacle {
         for (int i = 0; i < 4; i++) {
             asprSpike.get(i).draw(batch);
             asprSpike.get(i).translateX(4);
-            arecSpike.get(i).setX(asprSpike.get(i).getX());
-            arecSpike.get(i).setY(asprSpike.get(i).getY());
+            arecSpike.get(i).setX(asprSpike.get(i).getX() + (nLeniency / 2));
+            arecSpike.get(i).setY(asprSpike.get(i).getY() + (nLeniency / 2));
             if (asprSpike.get(i).getX() > nWid) {
                 asprSpike.get(i).setX(-txrSpike.getWidth());
                 asprSpike.get(i).setY((int) Math.floor(Math.random() * (nHighRange - nLowRange + 1) + nLowRange));
