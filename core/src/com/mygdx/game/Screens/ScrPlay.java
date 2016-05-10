@@ -51,17 +51,12 @@ public class ScrPlay implements Screen, InputProcessor {
     public static Texture backgroundTexture;
     public static Sprite backgroundSprite;
     float fTimer;
-    Preferences prefs;
 
-    public ScrPlay(Main Main) {  //Referencing the main class.
-        this.main = Main;
+    public ScrPlay(Main main) {  //Referencing the main class.
+        this.main = main;
     }
 
     public void show() {
-        prefs = Gdx.app.getPreferences("highscore");
-        if (!prefs.contains("highscore")) {
-            prefs.putInteger("highscore", 0);
-        }
         backgroundTexture = new Texture("Play.jpg");
         backgroundSprite = new Sprite(backgroundTexture);
         stage = new Stage();
@@ -84,9 +79,9 @@ public class ScrPlay implements Screen, InputProcessor {
         recBLeft = new Rectangle(0, 0, 10, nHei);
         recBRight = new Rectangle(nWid - 10, 0, 10, nHei);
         fTimer = 0;
-        obstacle.nHearts = 0;
         isTouchingL = false;
         isTouchingR = false;
+        main.nHighscore = 0;
     }
 
     public void renderBackground() {
@@ -166,9 +161,8 @@ public class ScrPlay implements Screen, InputProcessor {
 
         //spike hit detection, goes to gameover screen
         if (obstacle.bounds(character.recHB)) {
-            if (prefs.getInteger("highscore") < obstacle.nHearts){
-                prefs.putInteger("highscore", obstacle.nHearts);
-                obstacle.nHighscore = prefs.getInteger("highscore");
+            if (obstacle.nHearts > main.nHighscore){
+                main.nHighscore = obstacle.nHearts;
             }
             main.currentState = Main.GameState.OVER;
             main.updateState();

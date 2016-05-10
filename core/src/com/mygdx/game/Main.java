@@ -13,6 +13,7 @@ public class Main extends Game {
     ScrMenu scrMenu;
     ScrPlay scrPlay;
     ScrGameover scrGameover;
+    public int nHighscore;
 
     public enum GameState {
         MENU, PLAY, OVER
