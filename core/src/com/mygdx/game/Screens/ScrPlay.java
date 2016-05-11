@@ -46,14 +46,14 @@ public class ScrPlay implements Screen, InputProcessor {
     Obstacle obstacle;
     Viewport viewport;
     float fGameworldWidth = 1920, fGameworldHeight = 1080;
-    int picID = 1, nHei = 1080, nWid = 1920;
-    boolean isTouchingL = false, isTouchingR = false;
+    int picID = 1, nHei = 1080, nWid = 1920, nTouchCount = 0;
+    boolean isTouchingL = false, isTouchingR = false, isStill = false;
     public static Texture backgroundTexture;
     public static Sprite backgroundSprite;
     float fTimer;
 
-    public ScrPlay(Main main) {  //Referencing the main class.
-        this.main = main;
+    public ScrPlay(Main Main) {  //Referencing the main class.
+        this.main = Main;
     }
 
     public void show() {
@@ -79,8 +79,11 @@ public class ScrPlay implements Screen, InputProcessor {
         recBLeft = new Rectangle(0, 0, 10, nHei);
         recBRight = new Rectangle(nWid - 10, 0, 10, nHei);
         fTimer = 0;
+        obstacle.nHearts = 0;
         isTouchingL = false;
         isTouchingR = false;
+        nTouchCount = 0;
+
     }
 
     public void renderBackground() {
@@ -121,8 +124,7 @@ public class ScrPlay implements Screen, InputProcessor {
                 character.action(1, 0, 10);
                 character.isGrounded = true;
                 character.nSpeed = nWid / 4;
-            }
-            else {
+            } else {
                 character.jump();
             }
         } else if (character.bounds(recBUp) == 1) {
@@ -137,15 +139,15 @@ public class ScrPlay implements Screen, InputProcessor {
             character.action(3, nWid - 10, 0);
         }
 
-        //Android Controlss
+        //Android Controls
         if (isTouchingL) {
-            character.moveLeft(Gdx.graphics.getDeltaTime());
-            picID = 2;
-        }
+                character.moveLeft(Gdx.graphics.getDeltaTime());
+                picID = 2;
+            }
         if (isTouchingR) {
-            character.moveRight(Gdx.graphics.getDeltaTime());
-            picID = 1;
-        }
+                character.moveRight(Gdx.graphics.getDeltaTime());
+                picID = 1;
+            }
 
 
         //Keyboard Controls
@@ -158,11 +160,8 @@ public class ScrPlay implements Screen, InputProcessor {
             picID = 1;
         }
 
-        //spike hit detection, goes to gameover screen
+        //spike hit detection, goes to game over screen
         if (obstacle.bounds(character.recHB)) {
-            if (obstacle.nHearts > main.nHighscore){
-                main.nHighscore = obstacle.nHearts;
-            }
             main.currentState = Main.GameState.OVER;
             main.updateState();
         }
@@ -174,17 +173,16 @@ public class ScrPlay implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        System.out.println("1");
-        if (screenX < nWid / 2) {
-            isTouchingR = false;
-            isTouchingL = true;
-            System.out.println("left");
-        }
-        if (screenX > nWid / 2) {
-            isTouchingL = false;
-            isTouchingR = true;
-            System.out.println("right");
-        }
+        System.out.println("touch");
+        nTouchCount++;
+            if (screenX < Gdx.graphics.getWidth() / 2) {
+                isTouchingL = true;
+                isTouchingR = false;
+            }
+            if (screenX > Gdx.graphics.getWidth() / 2) {
+                isTouchingR = true;
+                isTouchingL = false;
+            }
         return false;
     }
 
@@ -226,13 +224,10 @@ public class ScrPlay implements Screen, InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if (screenX < nWid / 2) {
+        nTouchCount--;
+        if (nTouchCount == 0) {
             isTouchingL = false;
-            System.out.println("left stop");
-        }
-        if (screenX > nWid / 2) {
             isTouchingR = false;
-            System.out.println("right stop");
         }
         return false;
     }

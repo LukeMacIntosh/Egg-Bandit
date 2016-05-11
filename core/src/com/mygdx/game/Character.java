@@ -11,7 +11,7 @@ public class Character {
     Texture txrReg, txrFlip;
     float fGravity;
     public boolean isGrounded = false;
-    public int nSpeed = 300, nPicStat;
+    public int nSpeed = 300;
     int nHei = 1080, nWid = 1920;
 
 
@@ -77,13 +77,11 @@ public class Character {
     public void draw1(SpriteBatch batch) {
         sprGengar.setTexture(txrReg);
         sprGengar.draw(batch);
-        nPicStat = 1;
     }
 
     public void draw2(SpriteBatch batch) {
         sprGengar.setTexture(txrFlip);
         sprGengar.draw(batch);
-        nPicStat = 2;
     }
 
     public void jump() {
