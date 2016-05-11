@@ -3,7 +3,6 @@ package com.mygdx.game.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -14,72 +13,56 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Main;
+import com.mygdx.game.Obstacle;
 import com.mygdx.game.TbMenu;
 import com.mygdx.game.TbsMenu;
-
-import java.awt.Font;
 
 /**
  * Created by luke on 2016-04-20.
  */
-
-public class ScrMenu implements Screen, InputProcessor {
+public class ScrInstruct implements Screen, InputProcessor {
     Main main;
     TbsMenu tbsMenu;
-    TbMenu tbPlay, tbInstruct;
+    TbMenu tbMenu;
     Stage stage;
     SpriteBatch batch;
     BitmapFont screenName;
-    Music sound8bit;
-    Viewport viewport;
-    OrthographicCamera ocCam;
-    float fGameworldWidth = 1920, fGameworldHeight = 1080;
+    Obstacle obstacle;
     public static Texture backgroundTexture;
     public static Sprite backgroundSprite;
+    float fGameworldWidth = 1920, fGameworldHeight = 1080;
+    OrthographicCamera ocCam;
+    Viewport viewport;
 
-    public ScrMenu(Main main) {  //Referencing the main class.
+    public ScrInstruct(Main main) {  //Referencing the main class.
         this.main = main;
     }
 
     public void show() {
+        backgroundTexture = new Texture("instructions.jpg");
+        backgroundSprite = new Sprite(backgroundTexture);
+        stage = new Stage();
+        tbsMenu = new TbsMenu();
+        batch = new SpriteBatch();
+        obstacle = new Obstacle();
+        screenName = new BitmapFont(Gdx.files.internal("label.fnt"));
+        //screenName.getData().setScale(2, 2);
+        screenName.setColor(Color.WHITE);
         ocCam = new OrthographicCamera();
         ocCam.setToOrtho(false);
         viewport = new FillViewport(fGameworldWidth, fGameworldHeight, ocCam);
         viewport.apply();
         ocCam.position.set(fGameworldWidth / 2, fGameworldHeight / 2, 0);
-        stage = new Stage();
-        tbsMenu = new TbsMenu();
-        batch = new SpriteBatch();
-        backgroundTexture = new Texture("menu.jpg");
-        backgroundSprite = new Sprite(backgroundTexture);
-        screenName = new BitmapFont(Gdx.files.internal("label.fnt"));
-        screenName.getData().setScale(2, 2);
-        screenName.setColor(Color.BLUE);
-        tbPlay = new TbMenu("PLAY", tbsMenu);
-        tbInstruct = new TbMenu("INSTRUCTIONS", tbsMenu);
-        // Gdx.graphics.getWidth/Height is only necessary for the buttons
-        // We scaled the whole game using out nWid and nHei variables,
-        // but for some reason the buttons didnt like that and they need special treatment.
-        tbPlay.setSize(Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() / 4);
-        tbPlay.setY(Gdx.graphics.getHeight() / 2 - Gdx.graphics.getHeight() / 16);
-        tbPlay.setX(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 6);
-        tbInstruct.setSize(Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() / 4);
-        tbInstruct.setY(Gdx.graphics.getHeight() / 2 - Gdx.graphics.getHeight() / 3);
-        tbInstruct.setX(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 6);
-        stage.addActor(tbPlay);
-        stage.addActor(tbInstruct);
-        sound8bit = Gdx.audio.newMusic(Gdx.files.internal("8bit4.wav"));
-        sound8bit.play();
-        sound8bit.setLooping(true);
+        tbMenu = new TbMenu("BACK", tbsMenu);
+        tbMenu.setSize(Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() / 4);
+        tbMenu.setY(Gdx.graphics.getHeight() / 18);
+        tbMenu.setX(Gdx.graphics.getWidth() / 14);
+        stage.addActor(tbMenu);
         Gdx.input.setInputProcessor(stage);
-        btnPlayListener();
-        btnInstructListener();
+        btnMenuListener();
     }
 
     public void renderBackground() {
@@ -93,35 +76,31 @@ public class ScrMenu implements Screen, InputProcessor {
     }
 
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1); //black background.
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         ocCam.update();
         batch.setProjectionMatrix(ocCam.combined);
         batch.begin();
         renderBackground();
-        screenName.draw(batch, "SF GAME", 600, 1000);
+        screenName.draw(batch, "INSTRUCTIONS SCREEN", 525, 1000);
         batch.end();
         stage.act();
         stage.draw();
     }
 
-    public void btnPlayListener() {
-        tbPlay.addListener(new ChangeListener() {
+    public void btnMenuListener() {
+        tbMenu.addListener(new ChangeListener() {
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-                main.currentState = Main.GameState.PLAY;
+                main.currentState = Main.GameState.MENU;
                 main.updateState();
-                sound8bit.stop();
+                obstacle.nHearts = 0;
             }
         });
     }
 
-    public void btnInstructListener() {
-        tbInstruct.addListener(new ChangeListener() {
-            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-                main.currentState = Main.GameState.INSTRUCT;
-                main.updateState();
-            }
-        });
+    @Override
+    public void dispose() {
+        batch.dispose();
     }
 
     @Override
@@ -136,11 +115,6 @@ public class ScrMenu implements Screen, InputProcessor {
 
     @Override
     public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
 
     }
 

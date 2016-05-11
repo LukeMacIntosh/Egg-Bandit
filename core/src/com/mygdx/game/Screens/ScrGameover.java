@@ -38,8 +38,8 @@ public class ScrGameover implements Screen, InputProcessor {
     OrthographicCamera ocCam;
     Viewport viewport;
 
-    public ScrGameover(Main Main) {  //Referencing the main class.
-        this.main = Main;
+    public ScrGameover(Main main) {  //Referencing the main class.
+        this.main = main;
     }
 
     public void show() {
@@ -114,6 +114,7 @@ public class ScrGameover implements Screen, InputProcessor {
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                 main.currentState = Main.GameState.PLAY;
                 main.updateState();
+                obstacle.nHearts = 0;
             }
         });
     }

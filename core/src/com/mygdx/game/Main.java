@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
+import com.mygdx.game.Screens.ScrInstruct;
 import com.mygdx.game.Screens.ScrMenu;
 import com.mygdx.game.Screens.ScrPlay;
 import com.mygdx.game.Screens.ScrGameover;
@@ -10,13 +11,14 @@ import com.mygdx.game.Screens.ScrGameover;
  */
 
 public class Main extends Game {
+    public int nHighscore;
     ScrMenu scrMenu;
     ScrPlay scrPlay;
     ScrGameover scrGameover;
-    public int nHighscore;
+    ScrInstruct scrInstruct;
 
     public enum GameState {
-        MENU, PLAY, OVER
+        MENU, PLAY, OVER, INSTRUCT
     }
 
     public GameState currentState;
@@ -28,6 +30,8 @@ public class Main extends Game {
             setScreen(scrPlay);
         } else if (currentState == GameState.OVER) {
             setScreen(scrGameover);
+        } else if (currentState == GameState.INSTRUCT){
+            setScreen(scrInstruct);
         }
     }
 
@@ -36,6 +40,7 @@ public class Main extends Game {
         scrMenu = new ScrMenu(this);
         scrPlay = new ScrPlay(this);
         scrGameover = new ScrGameover(this);
+        scrInstruct = new ScrInstruct(this);
         currentState = GameState.MENU;
         updateState();
     }

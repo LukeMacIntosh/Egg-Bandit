@@ -81,7 +81,6 @@ public class ScrPlay implements Screen, InputProcessor {
         fTimer = 0;
         isTouchingL = false;
         isTouchingR = false;
-        main.nHighscore = 0;
     }
 
     public void renderBackground() {
