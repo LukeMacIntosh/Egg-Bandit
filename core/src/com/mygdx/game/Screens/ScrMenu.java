@@ -120,6 +120,7 @@ public class ScrMenu implements Screen, InputProcessor {
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                 main.currentState = Main.GameState.INSTRUCT;
                 main.updateState();
+                sound8bit.stop();
             }
         });
     }
