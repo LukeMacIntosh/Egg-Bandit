@@ -31,6 +31,7 @@ public class ScrGameover implements Screen, InputProcessor {
     SpriteBatch batch;
     BitmapFont screenName, bmScore, bmHighscore;
     Obstacle obstacle;
+    ScrPlay scrPlay;
     int nHei = 1080, nWid = 1920;
     public static Texture backgroundTexture;
     public static Sprite backgroundSprite;
@@ -93,7 +94,7 @@ public class ScrGameover implements Screen, InputProcessor {
         renderBackground();
         screenName.draw(batch, "GAMEOVER", 525, 1000);
         bmScore.draw(batch, "SCORE: " + Integer.toString(obstacle.nHearts), 800, 750);
-        bmHighscore.draw(batch, "HIGH-SCORE: " + main.nHighscore, 625, 500);
+        bmHighscore.draw(batch, "HIGH-SCORE: " + main.prefsSCORE.getInteger("Latest Highscore"), 625, 500);
         batch.end();
         stage.act();
         stage.draw();

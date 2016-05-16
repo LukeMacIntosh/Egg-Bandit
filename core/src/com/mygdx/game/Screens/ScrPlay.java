@@ -162,8 +162,8 @@ public class ScrPlay implements Screen, InputProcessor {
 
         //spike hit detection, goes to game over screen
         if (obstacle.bounds(character.recHB)) {
-            if (obstacle.nHearts > main.nHighscore){
-                main.nHighscore = obstacle.nHearts;
+            if (obstacle.nHearts > main.prefsSCORE.getInteger("Latest Highscore")){
+                main.prefsSCORE.putInteger("Latest Highscore", obstacle.nHearts);
             }
             main.currentState = Main.GameState.OVER;
             main.updateState();
@@ -172,6 +172,7 @@ public class ScrPlay implements Screen, InputProcessor {
         sbChar.end();
         stage.act();
         stage.draw();
+        main.prefsSCORE.flush();
     }
 
     @Override

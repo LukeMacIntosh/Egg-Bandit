@@ -1,6 +1,8 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.mygdx.game.Screens.ScrInstruct;
 import com.mygdx.game.Screens.ScrMenu;
 import com.mygdx.game.Screens.ScrPlay;
@@ -11,7 +13,7 @@ import com.mygdx.game.Screens.ScrGameover;
  */
 
 public class Main extends Game {
-    public int nHighscore;
+    public Preferences prefsSCORE;
     ScrMenu scrMenu;
     ScrPlay scrPlay;
     ScrGameover scrGameover;
@@ -37,6 +39,7 @@ public class Main extends Game {
 
     @Override
     public void create() {
+        prefsSCORE = Gdx.app.getPreferences("Latest Highscore");
         scrMenu = new ScrMenu(this);
         scrPlay = new ScrPlay(this);
         scrGameover = new ScrGameover(this);
