@@ -140,14 +140,22 @@ public class ScrPlay implements Screen, InputProcessor {
         }
 
         //Android Controls
-        if (isTouchingL) {
-                character.moveLeft(Gdx.graphics.getDeltaTime());
+        if (Gdx.input.isTouched(0) && Gdx.input.getX(0) < Gdx.graphics.getWidth() / 2
+                || Gdx.input.isTouched(1) && Gdx.input.getX(1) < Gdx.graphics.getWidth() / 2) {
+            character.moveLeft(Gdx.graphics.getDeltaTime());
+            if (Gdx.input.isTouched(0) && Gdx.input.isTouched(1)) {
+            } else {
                 picID = 2;
             }
-        if (isTouchingR) {
-                character.moveRight(Gdx.graphics.getDeltaTime());
+        }
+        if (Gdx.input.isTouched(0) && Gdx.input.getX(0) > Gdx.graphics.getWidth() / 2
+                || Gdx.input.isTouched(1) && Gdx.input.getX(1) > Gdx.graphics.getWidth() / 2) {
+            character.moveRight(Gdx.graphics.getDeltaTime());
+            if (Gdx.input.isTouched(0) && Gdx.input.isTouched(1)) {
+            } else {
                 picID = 1;
             }
+        }
 
 
         //Keyboard Controls
@@ -162,6 +170,9 @@ public class ScrPlay implements Screen, InputProcessor {
 
         //spike hit detection, goes to game over screen
         if (obstacle.bounds(character.recHB)) {
+            if (obstacle.nHearts > main.nHighscore){
+                main.nHighscore = obstacle.nHearts;
+            }
             main.currentState = Main.GameState.OVER;
             main.updateState();
         }
@@ -173,8 +184,9 @@ public class ScrPlay implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        System.out.println("touch");
+/*        System.out.println("touch");
         nTouchCount++;
+        if (nTouchCount == 1) {
             if (screenX < Gdx.graphics.getWidth() / 2) {
                 isTouchingL = true;
                 isTouchingR = false;
@@ -183,6 +195,11 @@ public class ScrPlay implements Screen, InputProcessor {
                 isTouchingR = true;
                 isTouchingL = false;
             }
+        }
+        if (nTouchCount == 2) {
+            isTouchingR = false;
+            isTouchingL = false;
+        }*/
         return false;
     }
 
@@ -224,11 +241,11 @@ public class ScrPlay implements Screen, InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        nTouchCount--;
+ /*       nTouchCount--;
         if (nTouchCount == 0) {
             isTouchingL = false;
             isTouchingR = false;
-        }
+        }*/
         return false;
     }
 
