@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,18 +14,23 @@ public class Obstacle {
     Rectangle recHeartBox;
     Sprite sprSpike, sprHeart;
     Texture txrSpike, txrHeart;
+    Music mHeartcollected, mSpikehit;
     int nSpikeStatus, nHeartStatus, nRan, nLowRange, nHighRange;
     int nHei = 1080, nWid = 1920, nLeniency;
     float fX, fY;
     Array<Sprite> asprSpike;
     Array<Rectangle> arecSpike;
+    public boolean isGrabable = false;
 
     public Obstacle() {
+        mHeartcollected = Gdx.audio.newMusic(Gdx.files.internal("heartcollected.mp3"));
+        mSpikehit = Gdx.audio.newMusic(Gdx.files.internal("spikehit.wav"));
         txrHeart = new Texture("heart.png");
         sprHeart = new Sprite(txrHeart, 0, 0, 128, 128);
         sprHeart.setSize(nWid / 15, nWid / 15);
         recHeartBox = new Rectangle(0f, 0f, sprHeart.getWidth(), sprHeart.getHeight());
-        recHeartBox.x = (int) Math.floor(Math.random() * (nWid - sprHeart.getWidth() + 1));
+        //recHeartBox.x = (int) Math.floor(Math.random() * (nWid - sprHeart.getWidth() + 1));
+        recHeartBox.x = nWid / 2 - sprHeart.getWidth() / 2;
         recHeartBox.y = nHei * 3 / 4;
         sprHeart.setPosition(recHeartBox.x, recHeartBox.y);
         nLeniency = 150;
@@ -57,7 +63,7 @@ public class Obstacle {
 
         for (int i = 0; i < 4; i++) {
             asprSpike.get(i).draw(batch);
-            asprSpike.get(i).translateX(4);
+            asprSpike.get(i).translateX((nHearts / 2) + 3);
             arecSpike.get(i).setX(asprSpike.get(i).getX() + (nLeniency / 2));
             arecSpike.get(i).setY(asprSpike.get(i).getY() + (nLeniency / 2));
             if (asprSpike.get(i).getX() > nWid) {
@@ -70,25 +76,24 @@ public class Obstacle {
     public boolean bounds(Rectangle r) {
         //spike collision
         if (nSpikeStatus == 0 && isRecTouch(r)) {
-            //0 = not touching, -1 = touching
             System.out.println("collision - 1");
             nSpikeStatus = -1;
-            //nRan = (int) Math.floor(Math.random() * (Gdx.graphics.getWidth() - sprSpike.getWidth() + 1));
-            //sprSpike.setX(nRan);
-            //recSpikeBox.setX(nRan);
+            mSpikehit.play();
             return true;
         } else if (!isRecTouch(r)) {
             nSpikeStatus = 0;
         }
 
         //heart collision
-        if (nHeartStatus == 0 && recHeartBox.overlaps(r)) {
+        if (nHeartStatus == 0 && recHeartBox.overlaps(r) && isGrabable == true) {
             //0 = not touching, -1 = touching
             System.out.println("collision + 1");
+            isGrabable = false;
             nHeartStatus = -1;
-            nRan = (int) Math.floor(Math.random() * (nWid - sprHeart.getWidth() + 1));
+/*            nRan = (int) Math.floor(Math.random() * (nWid - sprHeart.getWidth() + 1));
             sprHeart.setX(nRan);
-            recHeartBox.setX(nRan);
+            recHeartBox.setX(nRan);*/
+            mHeartcollected.play();
             nHearts++;
         } else {
             nHeartStatus = 0;

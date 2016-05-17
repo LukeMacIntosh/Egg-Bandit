@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -45,6 +46,7 @@ public class ScrPlay implements Screen, InputProcessor {
     Character character;
     Obstacle obstacle;
     Viewport viewport;
+    Music mJump;
     float fGameworldWidth = 1920, fGameworldHeight = 1080;
     int picID = 1, nHei = 1080, nWid = 1920, nTouchCount = 0;
     boolean isTouchingL = false, isTouchingR = false, isStill = false;
@@ -59,6 +61,7 @@ public class ScrPlay implements Screen, InputProcessor {
     public void show() {
         backgroundTexture = new Texture("Play.jpg");
         backgroundSprite = new Sprite(backgroundTexture);
+        mJump = Gdx.audio.newMusic(Gdx.files.internal("jump.mp3"));
         stage = new Stage();
         tbsMenu = new TbsMenu();
         sbChar = new SpriteBatch();
@@ -126,6 +129,8 @@ public class ScrPlay implements Screen, InputProcessor {
                 character.nSpeed = nWid / 4;
             } else {
                 character.jump();
+                mJump.play();
+                obstacle.isGrabable = true;
             }
         } else if (character.bounds(recBUp) == 1) {
             character.action(4, 0, nHei - 10);
@@ -173,9 +178,11 @@ public class ScrPlay implements Screen, InputProcessor {
             if (obstacle.nHearts > main.prefsSCORE.getInteger("Latest Highscore")){
                 main.prefsSCORE.putInteger("Latest Highscore", obstacle.nHearts);
             }
+            // hurt sound
             main.currentState = Main.GameState.OVER;
             main.updateState();
         }
+        // if statement for the heart sound
         sbChar.begin();
         sbChar.end();
         stage.act();
@@ -242,11 +249,6 @@ public class ScrPlay implements Screen, InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
- /*       nTouchCount--;
-        if (nTouchCount == 0) {
-            isTouchingL = false;
-            isTouchingR = false;
-        }*/
         return false;
     }
 
