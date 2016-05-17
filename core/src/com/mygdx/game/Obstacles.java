@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
-public class Obstacle {
+public class Obstacles {
     public static int nHearts = 0;
     Rectangle recHeartBox;
     Sprite sprSpike, sprHeart;
@@ -22,7 +22,7 @@ public class Obstacle {
     Array<Rectangle> arecSpike;
     public boolean isGrabable = false;
 
-    public Obstacle() {
+    public Obstacles() {
         mHeartcollected = Gdx.audio.newMusic(Gdx.files.internal("heartcollected.mp3"));
         mSpikehit = Gdx.audio.newMusic(Gdx.files.internal("spikehit.wav"));
         txrHeart = new Texture("heart.png");

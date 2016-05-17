@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Main;
-import com.mygdx.game.Obstacle;
+import com.mygdx.game.Obstacles;
 import com.mygdx.game.TbMenu;
 import com.mygdx.game.TbsMenu;
 
@@ -29,10 +29,10 @@ public class ScrGameover implements Screen, InputProcessor {
     TbMenu tbMenu, tbPlay;
     Stage stage;
     SpriteBatch batch;
-    BitmapFont screenName, bmScore, bmHighscore;
-    Obstacle obstacle;
+    BitmapFont screenName, bmScore, bmHighscore, bmStart;
+    Obstacles obstacles;
     ScrPlay scrPlay;
-    int nHei = 1080, nWid = 1920;
+    int nHei = 1080, nWid = 1920, nCounter = 3;
     public static Texture backgroundTexture;
     public static Sprite backgroundSprite;
     float fGameworldWidth = 1920, fGameworldHeight = 1080;
@@ -49,7 +49,7 @@ public class ScrGameover implements Screen, InputProcessor {
         stage = new Stage();
         tbsMenu = new TbsMenu();
         batch = new SpriteBatch();
-        obstacle = new Obstacle();
+        obstacles = new Obstacles();
         screenName = new BitmapFont(Gdx.files.internal("label.fnt"));
         screenName.getData().setScale(2, 2);
         screenName.setColor(Color.BLACK);
@@ -93,7 +93,7 @@ public class ScrGameover implements Screen, InputProcessor {
         batch.begin();
         renderBackground();
         screenName.draw(batch, "GAMEOVER", 525, 1000);
-        bmScore.draw(batch, "SCORE: " + Integer.toString(obstacle.nHearts), 800, 750);
+        bmScore.draw(batch, "SCORE: " + Integer.toString(obstacles.nHearts), 800, 750);
         bmHighscore.draw(batch, "HIGH-SCORE: " + main.prefsSCORE.getInteger("Latest Highscore"), 625, 500);
         batch.end();
         stage.act();
@@ -105,7 +105,7 @@ public class ScrGameover implements Screen, InputProcessor {
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                 main.currentState = Main.GameState.MENU;
                 main.updateState();
-                obstacle.nHearts = 0;
+                obstacles.nHearts = 0;
             }
         });
     }
@@ -115,7 +115,7 @@ public class ScrGameover implements Screen, InputProcessor {
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                 main.currentState = Main.GameState.PLAY;
                 main.updateState();
-                obstacle.nHearts = 0;
+                obstacles.nHearts = 0;
             }
         });
     }

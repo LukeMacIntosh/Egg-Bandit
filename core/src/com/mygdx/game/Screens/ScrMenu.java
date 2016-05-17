@@ -44,7 +44,7 @@ public class ScrMenu implements Screen, InputProcessor {
     public static Texture backgroundTexture;
     public static Sprite backgroundSprite;
 
-    public ScrMenu(Main main) {  //Referencing the main class.
+    public ScrMenu(Main main) { //Referencing the main class.
         this.main = main;
     }
 

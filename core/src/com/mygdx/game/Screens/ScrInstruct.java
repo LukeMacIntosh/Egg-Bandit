@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Main;
-import com.mygdx.game.Obstacle;
+import com.mygdx.game.Obstacles;
 import com.mygdx.game.TbMenu;
 import com.mygdx.game.TbsMenu;
 
@@ -30,7 +30,7 @@ public class ScrInstruct implements Screen, InputProcessor {
     Stage stage;
     SpriteBatch batch;
     BitmapFont screenName;
-    Obstacle obstacle;
+    Obstacles obstacles;
     public static Texture backgroundTexture;
     public static Sprite backgroundSprite;
     float fGameworldWidth = 1920, fGameworldHeight = 1080;
@@ -47,7 +47,7 @@ public class ScrInstruct implements Screen, InputProcessor {
         stage = new Stage();
         tbsMenu = new TbsMenu();
         batch = new SpriteBatch();
-        obstacle = new Obstacle();
+        obstacles = new Obstacles();
         screenName = new BitmapFont(Gdx.files.internal("label.fnt"));
         //screenName.getData().setScale(2, 2);
         screenName.setColor(Color.WHITE);
@@ -93,7 +93,7 @@ public class ScrInstruct implements Screen, InputProcessor {
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                 main.currentState = Main.GameState.MENU;
                 main.updateState();
-                obstacle.nHearts = 0;
+                obstacles.nHearts = 0;
             }
         });
     }

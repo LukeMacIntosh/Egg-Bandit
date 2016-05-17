@@ -3,34 +3,23 @@ package com.mygdx.game.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScalingViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Main;
-import com.mygdx.game.Obstacle;
-import com.mygdx.game.TbMenu;
+import com.mygdx.game.Obstacles;
 import com.mygdx.game.TbsMenu;
 import com.mygdx.game.Character;
-import com.mygdx.game.Screens.ScrGameover;
 
 /**
  * Created by luke on 2016-04-20.
@@ -40,22 +29,22 @@ public class ScrPlay implements Screen, InputProcessor {
     TbsMenu tbsMenu;
     Stage stage;
     SpriteBatch sbChar;
-    BitmapFont bmHearts;
+    BitmapFont bmHearts, bmStart;
     OrthographicCamera ocCam;
     Rectangle recBDown, recBUp, recBLeft, recBRight;
     Character character;
-    Obstacle obstacle;
+    Obstacles obstacles;
     Viewport viewport;
     Music mJump;
     float fGameworldWidth = 1920, fGameworldHeight = 1080;
-    int picID = 1, nHei = 1080, nWid = 1920, nTouchCount = 0;
+    int picID = 1, nHei = 1080, nWid = 1920, nTouchCount = 0, nCounter = 0;
     boolean isTouchingL = false, isTouchingR = false, isStill = false;
     public static Texture backgroundTexture;
     public static Sprite backgroundSprite;
     float fTimer;
 
-    public ScrPlay(Main Main) {  //Referencing the main class.
-        this.main = Main;
+    public ScrPlay(Main main) {  //Referencing the main class.
+        this.main = main;
     }
 
     public void show() {
@@ -71,9 +60,11 @@ public class ScrPlay implements Screen, InputProcessor {
         viewport.apply();
         ocCam.position.set(fGameworldWidth / 2, fGameworldHeight / 2, 0);
         character = new Character();
-        obstacle = new Obstacle();
+        obstacles = new Obstacles();
         bmHearts = new BitmapFont(Gdx.files.internal("label.fnt"));
         bmHearts.setColor(Color.RED);
+        bmStart = new BitmapFont(Gdx.files.internal("label.fnt"));
+        bmStart.getData().setScale(5, 5);
         character.setPosition(nWid / 2 - 64, 11);
         Gdx.input.setInputProcessor(stage);
         Gdx.input.setInputProcessor(this);
@@ -81,12 +72,11 @@ public class ScrPlay implements Screen, InputProcessor {
         recBUp = new Rectangle(0, nHei - 10, nWid, 10);
         recBLeft = new Rectangle(0, 0, 10, nHei);
         recBRight = new Rectangle(nWid - 10, 0, 10, nHei);
-        fTimer = 0;
-        obstacle.nHearts = 0;
+        fTimer = 3;
+        obstacles.nHearts = 0;
         isTouchingL = false;
         isTouchingR = false;
         nTouchCount = 0;
-
     }
 
     public void renderBackground() {
@@ -107,15 +97,28 @@ public class ScrPlay implements Screen, InputProcessor {
         sbChar.begin();
         renderBackground();
 
-        fTimer += Gdx.graphics.getDeltaTime();
-
+        fTimer -= Gdx.graphics.getDeltaTime();
+        if (fTimer > 0 && fTimer < 1) {
+            nCounter = 1;
+        } else if (fTimer > 1 && fTimer < 2) {
+            nCounter = 2;
+        } else if (fTimer > 2 && fTimer < 3) {
+            nCounter = 3;
+        } else if (fTimer < 0) {
+            nCounter = -1;
+        }
         if (picID == 1) {
             character.draw1(sbChar);
         } else {
             character.draw2(sbChar);
         }
-        obstacle.draw(sbChar);
-        bmHearts.draw(sbChar, "Hearts collected: " + Integer.toString(obstacle.nHearts), nWid - 1300, nHei - 50);
+        obstacles.draw(sbChar);
+        bmHearts.draw(sbChar, "Hearts collected: " + Integer.toString(obstacles.nHearts), nWid - 1300, nHei - 50);
+        if (fTimer > 0 && fTimer < 3) {
+            bmStart.draw(sbChar, Integer.toString(nCounter), 800, 800);
+        } else {
+            //don't draw
+        }
         sbChar.end();
 
         //updates
@@ -123,14 +126,14 @@ public class ScrPlay implements Screen, InputProcessor {
 
         //Boundaries
         if (character.bounds(recBDown) == 1) {
-            if (fTimer < 3) {
+            if (fTimer > 0 && fTimer < 3) {
                 character.action(1, 0, 10);
                 character.isGrounded = true;
                 character.nSpeed = nWid / 4;
             } else {
                 character.jump();
                 mJump.play();
-                obstacle.isGrabable = true;
+                obstacles.isGrabable = true;
             }
         } else if (character.bounds(recBUp) == 1) {
             character.action(4, 0, nHei - 10);
@@ -174,9 +177,9 @@ public class ScrPlay implements Screen, InputProcessor {
         }
 
         //spike hit detection, goes to game over screen
-        if (obstacle.bounds(character.recHB)) {
-            if (obstacle.nHearts > main.prefsSCORE.getInteger("Latest Highscore")){
-                main.prefsSCORE.putInteger("Latest Highscore", obstacle.nHearts);
+        if (obstacles.bounds(character.recHB)) {
+            if (obstacles.nHearts > main.prefsSCORE.getInteger("Latest Highscore")) {
+                main.prefsSCORE.putInteger("Latest Highscore", obstacles.nHearts);
             }
             // hurt sound
             main.currentState = Main.GameState.OVER;
