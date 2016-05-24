@@ -93,7 +93,7 @@ public class ScrInstruct implements Screen, InputProcessor {
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                 main.currentState = Main.GameState.MENU;
                 main.updateState();
-                obstacles.nHearts = 0;
+                obstacles.nMelons = 0;
             }
         });
     }

@@ -10,29 +10,30 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 public class Obstacles {
-    public static int nHearts = 0;
-    Rectangle recHeartBox;
-    Sprite sprSpike, sprHeart;
-    Texture txrSpike, txrHeart;
-    Music mHeartcollected, mSpikehit;
-    int nSpikeStatus, nHeartStatus, nRan, nLowRange, nHighRange;
+    public static int nMelons = 0;
+    Rectangle recMelonBox;
+    public Sprite sprSpike, sprMelon;
+    Texture txrSpike, txrMelon;
+    Music mMeloncollected, mSpikehit;
+    int nSpikeStatus, nMelonStatus, nRan, nLowRange, nHighRange;
     int nHei = 1080, nWid = 1920, nLeniency;
     float fX, fY;
     Array<Sprite> asprSpike;
     Array<Rectangle> arecSpike;
-    public boolean isGrabable = false;
+    public boolean isGrabable = true;
+    public float fTimer2;
 
     public Obstacles() {
-        mHeartcollected = Gdx.audio.newMusic(Gdx.files.internal("heartcollected.mp3"));
+        mMeloncollected = Gdx.audio.newMusic(Gdx.files.internal("Meloncollected.mp3"));
         mSpikehit = Gdx.audio.newMusic(Gdx.files.internal("spikehit.wav"));
-        txrHeart = new Texture("heart.png");
-        sprHeart = new Sprite(txrHeart, 0, 0, 128, 128);
-        sprHeart.setSize(nWid / 15, nWid / 15);
-        recHeartBox = new Rectangle(0f, 0f, sprHeart.getWidth(), sprHeart.getHeight());
-        //recHeartBox.x = (int) Math.floor(Math.random() * (nWid - sprHeart.getWidth() + 1));
-        recHeartBox.x = nWid / 2 - sprHeart.getWidth() / 2;
-        recHeartBox.y = nHei * 3 / 4;
-        sprHeart.setPosition(recHeartBox.x, recHeartBox.y);
+        txrMelon = new Texture("watermelon1.png");
+        sprMelon = new Sprite(txrMelon, 0, 0, 512, 512);
+        sprMelon.setSize(256, 256);
+        recMelonBox = new Rectangle(0f, 0f, sprMelon.getWidth(), sprMelon.getHeight());
+        //recMelonBox.x = (int) Math.floor(Math.random() * (nWid - sprMelon.getWidth() + 1));
+        recMelonBox.x = nWid / 2 - sprMelon.getWidth() / 2;
+        recMelonBox.y = nHei * 3 / 4;
+        sprMelon.setPosition(recMelonBox.x, recMelonBox.y);
         nLeniency = 150;
 
         //range for random spike y coordinates
@@ -59,11 +60,11 @@ public class Obstacles {
     }
 
     public void draw(SpriteBatch batch) {
-        sprHeart.draw(batch);
+        sprMelon.draw(batch);
 
         for (int i = 0; i < 4; i++) {
             asprSpike.get(i).draw(batch);
-            asprSpike.get(i).translateX((nHearts / 2) + 3);
+            asprSpike.get(i).translateX((nMelons / 2) + 3);
             arecSpike.get(i).setX(asprSpike.get(i).getX() + (nLeniency / 2));
             arecSpike.get(i).setY(asprSpike.get(i).getY() + (nLeniency / 2));
             if (asprSpike.get(i).getX() > nWid) {
@@ -84,19 +85,20 @@ public class Obstacles {
             nSpikeStatus = 0;
         }
 
-        //heart collision
-        if (nHeartStatus == 0 && recHeartBox.overlaps(r) && isGrabable == true) {
+        //Melon collision
+        if (nMelonStatus == 0 && recMelonBox.overlaps(r) && isGrabable == true) {
             //0 = not touching, -1 = touching
+            fTimer2 = 0;
             System.out.println("collision + 1");
             isGrabable = false;
-            nHeartStatus = -1;
-/*            nRan = (int) Math.floor(Math.random() * (nWid - sprHeart.getWidth() + 1));
-            sprHeart.setX(nRan);
-            recHeartBox.setX(nRan);*/
-            mHeartcollected.play();
-            nHearts++;
+            nMelonStatus = -1;
+/*            nRan = (int) Math.floor(Math.random() * (nWid - sprMelon.getWidth() + 1));
+            sprMelon.setX(nRan);
+            recMelonBox.setX(nRan);*/
+            mMeloncollected.play();
+            nMelons++;
         } else {
-            nHeartStatus = 0;
+            nMelonStatus = 0;
         }
         return false;
     }

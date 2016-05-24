@@ -9,9 +9,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FillViewport;
@@ -29,7 +31,7 @@ public class ScrPlay implements Screen, InputProcessor {
     TbsMenu tbsMenu;
     Stage stage;
     SpriteBatch sbChar;
-    BitmapFont bmHearts, bmStart;
+    BitmapFont bmMelons, bmStart;
     OrthographicCamera ocCam;
     Rectangle recBDown, recBUp, recBLeft, recBRight;
     Character character;
@@ -41,7 +43,10 @@ public class ScrPlay implements Screen, InputProcessor {
     boolean isTouchingL = false, isTouchingR = false, isStill = false;
     public static Texture backgroundTexture;
     public static Sprite backgroundSprite;
-    float fTimer;
+    float fTimer, fTimer2;
+    Texture txrMelons;
+    TextureRegion[] trAnimFrames;
+    Animation aniMelons;
 
     public ScrPlay(Main main) {  //Referencing the main class.
         this.main = main;
@@ -61,8 +66,8 @@ public class ScrPlay implements Screen, InputProcessor {
         ocCam.position.set(fGameworldWidth / 2, fGameworldHeight / 2, 0);
         character = new Character();
         obstacles = new Obstacles();
-        bmHearts = new BitmapFont(Gdx.files.internal("label.fnt"));
-        bmHearts.setColor(Color.RED);
+        bmMelons = new BitmapFont(Gdx.files.internal("label.fnt"));
+        bmMelons.setColor(Color.RED);
         bmStart = new BitmapFont(Gdx.files.internal("label.fnt"));
         bmStart.getData().setScale(5, 5);
         character.setPosition(nWid / 2 - 64, 11);
@@ -73,10 +78,23 @@ public class ScrPlay implements Screen, InputProcessor {
         recBLeft = new Rectangle(0, 0, 10, nHei);
         recBRight = new Rectangle(nWid - 10, 0, 10, nHei);
         fTimer = 3;
-        obstacles.nHearts = 0;
+        obstacles.nMelons = 0;
         isTouchingL = false;
         isTouchingR = false;
         nTouchCount = 0;
+
+        //watermelons animation
+        txrMelons = new Texture("watermelonsheet.png");
+        TextureRegion[][] trAnimTemp = TextureRegion.split(txrMelons, 256, 256);
+        trAnimFrames = new TextureRegion[4];
+        int index = 0;
+
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                trAnimFrames[index++] = trAnimTemp[j][i];
+            }
+        }
+        aniMelons = new Animation(1f/5f, trAnimFrames);
     }
 
     public void renderBackground() {
@@ -98,6 +116,8 @@ public class ScrPlay implements Screen, InputProcessor {
         renderBackground();
 
         fTimer -= Gdx.graphics.getDeltaTime();
+        obstacles.fTimer2 += Gdx.graphics.getDeltaTime();
+
         if (fTimer > 0 && fTimer < 1) {
             nCounter = 1;
         } else if (fTimer > 1 && fTimer < 2) {
@@ -113,7 +133,7 @@ public class ScrPlay implements Screen, InputProcessor {
             character.draw2(sbChar);
         }
         obstacles.draw(sbChar);
-        bmHearts.draw(sbChar, "Hearts collected: " + Integer.toString(obstacles.nHearts), nWid - 1300, nHei - 50);
+        bmMelons.draw(sbChar, Integer.toString(obstacles.nMelons), nWid - 200, nHei - 50);
         if (fTimer > 0 && fTimer < 3) {
             bmStart.draw(sbChar, Integer.toString(nCounter), 800, 800);
         } else {
@@ -178,14 +198,21 @@ public class ScrPlay implements Screen, InputProcessor {
 
         //spike hit detection, goes to game over screen
         if (obstacles.bounds(character.recHB)) {
-            if (obstacles.nHearts > main.prefsSCORE.getInteger("Latest Highscore")) {
-                main.prefsSCORE.putInteger("Latest Highscore", obstacles.nHearts);
+            if (obstacles.nMelons > main.prefsSCORE.getInteger("Latest Highscore")) {
+                main.prefsSCORE.putInteger("Latest Highscore", obstacles.nMelons);
             }
             // hurt sound
             main.currentState = Main.GameState.OVER;
             main.updateState();
         }
-        // if statement for the heart sound
+        //animate melon
+        if (!obstacles.isGrabable) {
+            sbChar.begin();
+            sbChar.draw(aniMelons.getKeyFrame(obstacles.fTimer2, false), nWid / 2 -
+                    obstacles.sprMelon.getWidth() / 2, nHei * 3 / 4);
+            sbChar.end();
+        }
+        // if statement for the Melon sound
         sbChar.begin();
         sbChar.end();
         stage.act();
@@ -217,7 +244,7 @@ public class ScrPlay implements Screen, InputProcessor {
     @Override
     public void dispose() {
         sbChar.dispose();
-        bmHearts.dispose();
+        bmMelons.dispose();
     }
 
     @Override
