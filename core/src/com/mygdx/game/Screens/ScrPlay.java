@@ -37,7 +37,7 @@ public class ScrPlay implements Screen, InputProcessor {
     Character character;
     Obstacles obstacles;
     Viewport viewport;
-    Music mJump;
+    Music mJump, mInGameSong;
     float fGameworldWidth = 1920, fGameworldHeight = 1080;
     int picID = 1, nHei = 1080, nWid = 1920, nTouchCount = 0, nCounter = 0;
     boolean isTouchingL = false, isTouchingR = false, isStill = false;
@@ -56,6 +56,9 @@ public class ScrPlay implements Screen, InputProcessor {
         backgroundTexture = new Texture("backgrounds/Play.jpg");
         backgroundSprite = new Sprite(backgroundTexture);
         mJump = Gdx.audio.newMusic(Gdx.files.internal("sounds/jump.mp3"));
+        mInGameSong = Gdx.audio.newMusic(Gdx.files.internal("music/ingame1.wav"));
+        mInGameSong.play();
+        mInGameSong.setLooping(true);
         stage = new Stage();
         tbsMenu = new TbsMenu();
         sbChar = new SpriteBatch();
@@ -205,6 +208,7 @@ public class ScrPlay implements Screen, InputProcessor {
             // hurt sound
             main.currentState = Main.GameState.OVER;
             main.updateState();
+            mInGameSong.stop();
         }
         //animate melon
         if (!obstacles.isGrabable) {

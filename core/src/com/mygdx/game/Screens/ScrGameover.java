@@ -3,6 +3,7 @@ package com.mygdx.game.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -32,6 +33,7 @@ public class ScrGameover implements Screen, InputProcessor {
     BitmapFont screenName, bmScore, bmHighscore, bmStart;
     Obstacles obstacles;
     ScrPlay scrPlay;
+    Music mGameover;
     int nHei = 1080, nWid = 1920, nCounter = 3;
     public static Texture backgroundTexture;
     public static Sprite backgroundSprite;
@@ -44,6 +46,9 @@ public class ScrGameover implements Screen, InputProcessor {
     }
 
     public void show() {
+        mGameover = Gdx.audio.newMusic(Gdx.files.internal("music/gameover.wav"));
+        mGameover.play();
+        mGameover.setLooping(true);
         backgroundTexture = new Texture("backgrounds/gameover.jpg");
         backgroundSprite = new Sprite(backgroundTexture);
         stage = new Stage();
@@ -106,6 +111,7 @@ public class ScrGameover implements Screen, InputProcessor {
                 main.currentState = Main.GameState.MENU;
                 main.updateState();
                 obstacles.nMelons = 0;
+                mGameover.stop();
             }
         });
     }
@@ -116,6 +122,7 @@ public class ScrGameover implements Screen, InputProcessor {
                 main.currentState = Main.GameState.PLAY;
                 main.updateState();
                 obstacles.nMelons = 0;
+                mGameover.stop();
             }
         });
     }

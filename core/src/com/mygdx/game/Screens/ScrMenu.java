@@ -37,7 +37,7 @@ public class ScrMenu implements Screen, InputProcessor {
     Stage stage;
     SpriteBatch batch;
     BitmapFont screenName;
-    Music sound8bit;
+    Music mMenusong = Gdx.audio.newMusic(Gdx.files.internal("music/menu.wav"));
     Viewport viewport;
     OrthographicCamera ocCam;
     float fGameworldWidth = 1920, fGameworldHeight = 1080;
@@ -75,9 +75,11 @@ public class ScrMenu implements Screen, InputProcessor {
         tbInstruct.setX(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 6);
         stage.addActor(tbPlay);
         stage.addActor(tbInstruct);
-        sound8bit = Gdx.audio.newMusic(Gdx.files.internal("sounds/8bit4.wav"));
-        sound8bit.play();
-        sound8bit.setLooping(true);
+        //mMenusong = Gdx.audio.newMusic(Gdx.files.internal("music/menu.wav"));
+        if (!mMenusong.isPlaying()) {
+            mMenusong.play();
+            mMenusong.setLooping(true);
+        }
         Gdx.input.setInputProcessor(stage);
         btnPlayListener();
         btnInstructListener();
@@ -111,7 +113,7 @@ public class ScrMenu implements Screen, InputProcessor {
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                 main.currentState = Main.GameState.PLAY;
                 main.updateState();
-                sound8bit.stop();
+                mMenusong.stop();
             }
         });
     }
@@ -121,7 +123,6 @@ public class ScrMenu implements Screen, InputProcessor {
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                 main.currentState = Main.GameState.INSTRUCT;
                 main.updateState();
-                sound8bit.stop();
             }
         });
     }
