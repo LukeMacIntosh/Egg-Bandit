@@ -79,7 +79,7 @@ public class ScrMenu implements Screen, InputProcessor {
         if (!mMenusong.isPlaying()) {
             mMenusong.play();
             mMenusong.setLooping(true);
-        }
+        } // so the song doesn't overlap
         Gdx.input.setInputProcessor(stage);
         btnPlayListener();
         btnInstructListener();
