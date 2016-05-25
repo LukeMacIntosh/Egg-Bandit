@@ -61,7 +61,8 @@ public class ScrPlay implements Screen, InputProcessor {
         sbChar = new SpriteBatch();
         ocCam = new OrthographicCamera();
         ocCam.setToOrtho(false);
-        viewport = new FillViewport(fGameworldWidth, fGameworldHeight, ocCam); // We tried FitViewport and StretchViewport and they didnt seem to work, but Fill did !
+        viewport = new FillViewport(fGameworldWidth, fGameworldHeight, ocCam);
+        // We tried FitViewport and StretchViewport and they didn't seem to work, but Fill did !
         viewport.apply();
         ocCam.position.set(fGameworldWidth / 2, fGameworldHeight / 2, 0);
         character = new Character();
