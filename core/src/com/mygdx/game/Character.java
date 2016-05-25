@@ -16,10 +16,10 @@ public class Character {
 
 
     public Character() {
-        txrReg = new Texture("gengar.png");
-        txrFlip = new Texture("gengarf.png");
+        txrReg = new Texture("dude/gengar.png");
+        txrFlip = new Texture("dude/gengarf.png");
         sprGengar = new Sprite(txrReg, 0, 0, 128, 128);
-        sprGengar.setSize(nWid/10, nWid/10);
+        sprGengar.setSize(nWid / 10, nWid / 10);
         recHB = new Rectangle(0f, 0f, sprGengar.getWidth(),
                 sprGengar.getHeight());
         this.setPosition(0, 0);
@@ -40,12 +40,10 @@ public class Character {
         }
         if (type == 2) {
             setPosition(x, recHB.y);
-        }
-        else if (type == 3) {
+        } else if (type == 3) {
             x -= sprGengar.getWidth();
             setPosition(x, recHB.y);
-        }
-        else if (type == 4) {
+        } else if (type == 4) {
             y -= sprGengar.getHeight();
             setPosition(recHB.x, y);
         }

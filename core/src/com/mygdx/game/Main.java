@@ -32,7 +32,7 @@ public class Main extends Game {
             setScreen(scrPlay);
         } else if (currentState == GameState.OVER) {
             setScreen(scrGameover);
-        } else if (currentState == GameState.INSTRUCT){
+        } else if (currentState == GameState.INSTRUCT) {
             setScreen(scrInstruct);
         }
     }

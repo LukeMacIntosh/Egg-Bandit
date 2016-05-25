@@ -44,17 +44,17 @@ public class ScrGameover implements Screen, InputProcessor {
     }
 
     public void show() {
-        backgroundTexture = new Texture("gameover.jpg");
+        backgroundTexture = new Texture("backgrounds/gameover.jpg");
         backgroundSprite = new Sprite(backgroundTexture);
         stage = new Stage();
         tbsMenu = new TbsMenu();
         batch = new SpriteBatch();
         obstacles = new Obstacles();
-        screenName = new BitmapFont(Gdx.files.internal("label.fnt"));
+        screenName = new BitmapFont(Gdx.files.internal("fonts/label.fnt"));
         screenName.getData().setScale(2, 2);
         screenName.setColor(Color.BLACK);
-        bmScore = new BitmapFont(Gdx.files.internal("label.fnt"));
-        bmHighscore = new BitmapFont(Gdx.files.internal("label.fnt"));
+        bmScore = new BitmapFont(Gdx.files.internal("fonts/label.fnt"));
+        bmHighscore = new BitmapFont(Gdx.files.internal("fonts/label.fnt"));
         ocCam = new OrthographicCamera();
         ocCam.setToOrtho(false);
         viewport = new FillViewport(fGameworldWidth, fGameworldHeight, ocCam);
@@ -63,11 +63,11 @@ public class ScrGameover implements Screen, InputProcessor {
         tbMenu = new TbMenu("MENU", tbsMenu);
         tbPlay = new TbMenu("RETRY", tbsMenu);
         tbMenu.setSize(Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() / 4);
-        tbMenu.setY(Gdx.graphics.getHeight()/9);
-        tbMenu.setX(Gdx.graphics.getWidth()/2);
+        tbMenu.setY(Gdx.graphics.getHeight() / 9);
+        tbMenu.setX(Gdx.graphics.getWidth() / 2);
         tbPlay.setSize(Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() / 4);
-        tbPlay.setY(Gdx.graphics.getHeight()/9);
-        tbPlay.setX(Gdx.graphics.getWidth()/6);
+        tbPlay.setY(Gdx.graphics.getHeight() / 9);
+        tbPlay.setX(Gdx.graphics.getWidth() / 6);
         stage.addActor(tbMenu);
         stage.addActor(tbPlay);
         Gdx.input.setInputProcessor(stage);

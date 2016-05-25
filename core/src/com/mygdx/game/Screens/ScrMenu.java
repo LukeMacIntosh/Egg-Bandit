@@ -57,16 +57,16 @@ public class ScrMenu implements Screen, InputProcessor {
         stage = new Stage();
         tbsMenu = new TbsMenu();
         batch = new SpriteBatch();
-        backgroundTexture = new Texture("menu.jpg");
+        backgroundTexture = new Texture("backgrounds/menu.jpg");
         backgroundSprite = new Sprite(backgroundTexture);
-        screenName = new BitmapFont(Gdx.files.internal("label.fnt"));
+        screenName = new BitmapFont(Gdx.files.internal("fonts/label.fnt"));
         screenName.getData().setScale(2, 2);
         screenName.setColor(Color.BLUE);
         tbPlay = new TbMenu("PLAY", tbsMenu);
         tbInstruct = new TbMenu("INSTRUCTIONS", tbsMenu);
         // Gdx.graphics.getWidth/Height is only necessary for the buttons
         // We scaled the whole game using out nWid and nHei variables,
-        // but for some reason the buttons didnt like that and they need special treatment.
+        // but for some reason the buttons didn't like that and they need special treatment.
         tbPlay.setSize(Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() / 4);
         tbPlay.setY(Gdx.graphics.getHeight() / 2 - Gdx.graphics.getHeight() / 16);
         tbPlay.setX(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 6);
@@ -75,7 +75,7 @@ public class ScrMenu implements Screen, InputProcessor {
         tbInstruct.setX(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 6);
         stage.addActor(tbPlay);
         stage.addActor(tbInstruct);
-        sound8bit = Gdx.audio.newMusic(Gdx.files.internal("8bit4.wav"));
+        sound8bit = Gdx.audio.newMusic(Gdx.files.internal("sounds/8bit4.wav"));
         sound8bit.play();
         sound8bit.setLooping(true);
         Gdx.input.setInputProcessor(stage);

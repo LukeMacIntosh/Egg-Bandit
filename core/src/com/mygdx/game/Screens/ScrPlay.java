@@ -53,9 +53,9 @@ public class ScrPlay implements Screen, InputProcessor {
     }
 
     public void show() {
-        backgroundTexture = new Texture("Play.jpg");
+        backgroundTexture = new Texture("backgrounds/Play.jpg");
         backgroundSprite = new Sprite(backgroundTexture);
-        mJump = Gdx.audio.newMusic(Gdx.files.internal("jump.mp3"));
+        mJump = Gdx.audio.newMusic(Gdx.files.internal("sounds/jump.mp3"));
         stage = new Stage();
         tbsMenu = new TbsMenu();
         sbChar = new SpriteBatch();
@@ -66,9 +66,9 @@ public class ScrPlay implements Screen, InputProcessor {
         ocCam.position.set(fGameworldWidth / 2, fGameworldHeight / 2, 0);
         character = new Character();
         obstacles = new Obstacles();
-        bmMelons = new BitmapFont(Gdx.files.internal("label.fnt"));
+        bmMelons = new BitmapFont(Gdx.files.internal("fonts/label.fnt"));
         bmMelons.setColor(Color.RED);
-        bmStart = new BitmapFont(Gdx.files.internal("label.fnt"));
+        bmStart = new BitmapFont(Gdx.files.internal("fonts/label.fnt"));
         bmStart.getData().setScale(5, 5);
         character.setPosition(nWid / 2 - 64, 11);
         Gdx.input.setInputProcessor(stage);
@@ -84,7 +84,7 @@ public class ScrPlay implements Screen, InputProcessor {
         nTouchCount = 0;
 
         //watermelons animation
-        txrMelons = new Texture("watermelonsheet.png");
+        txrMelons = new Texture("obstacles/watermelonsheet.png");
         TextureRegion[][] trAnimTemp = TextureRegion.split(txrMelons, 256, 256);
         trAnimFrames = new TextureRegion[4];
         int index = 0;
@@ -94,7 +94,7 @@ public class ScrPlay implements Screen, InputProcessor {
                 trAnimFrames[index++] = trAnimTemp[j][i];
             }
         }
-        aniMelons = new Animation(1f/5f, trAnimFrames);
+        aniMelons = new Animation(1f / 8f, trAnimFrames);
     }
 
     public void renderBackground() {

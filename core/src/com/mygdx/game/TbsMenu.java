@@ -15,13 +15,13 @@ public class TbsMenu extends TextButton.TextButtonStyle {
     TextureAtlas buttonAtlas;
 
     public TbsMenu() {
-        BitmapFont font = new BitmapFont(Gdx.files.internal("luke.fnt"));
-        skin.add("luke.fnt", font);
-        buttonAtlas = new TextureAtlas(Gdx.files.internal("MenuButton.pack"));
+        BitmapFont font = new BitmapFont(Gdx.files.internal("fonts/luke.fnt"));
+        skin.add("fonts/luke.fnt", font);
+        buttonAtlas = new TextureAtlas(Gdx.files.internal("button/MenuButton.pack"));
         skin.addRegions(buttonAtlas);
         this.up = skin.getDrawable("MenuButtonUp");
         this.down = skin.getDrawable("MenuButtonDown");
         this.checked = skin.getDrawable("MenuButtonUp");
-        this.font = skin.getFont("luke.fnt");
+        this.font = skin.getFont("fonts/luke.fnt");
     }
 }

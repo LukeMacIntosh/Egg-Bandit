@@ -42,13 +42,13 @@ public class ScrInstruct implements Screen, InputProcessor {
     }
 
     public void show() {
-        backgroundTexture = new Texture("instructions.jpg");
+        backgroundTexture = new Texture("backgrounds/instructions.jpg");
         backgroundSprite = new Sprite(backgroundTexture);
         stage = new Stage();
         tbsMenu = new TbsMenu();
         batch = new SpriteBatch();
         obstacles = new Obstacles();
-        screenName = new BitmapFont(Gdx.files.internal("label.fnt"));
+        screenName = new BitmapFont(Gdx.files.internal("fonts/label.fnt"));
         //screenName.getData().setScale(2, 2);
         screenName.setColor(Color.WHITE);
         ocCam = new OrthographicCamera();

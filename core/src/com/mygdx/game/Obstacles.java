@@ -24,9 +24,9 @@ public class Obstacles {
     public float fTimer2;
 
     public Obstacles() {
-        mMeloncollected = Gdx.audio.newMusic(Gdx.files.internal("Meloncollected.mp3"));
-        mSpikehit = Gdx.audio.newMusic(Gdx.files.internal("spikehit.wav"));
-        txrMelon = new Texture("watermelon1.png");
+        mMeloncollected = Gdx.audio.newMusic(Gdx.files.internal("sounds/meloncollected.wav"));
+        mSpikehit = Gdx.audio.newMusic(Gdx.files.internal("sounds/spikehit.wav"));
+        txrMelon = new Texture("obstacles/watermelon1.png");
         sprMelon = new Sprite(txrMelon, 0, 0, 512, 512);
         sprMelon.setSize(256, 256);
         recMelonBox = new Rectangle(0f, 0f, sprMelon.getWidth(), sprMelon.getHeight());
@@ -40,7 +40,7 @@ public class Obstacles {
         nLowRange = nWid / 6;
         nHighRange = nHei * 5 / 6;
 
-        txrSpike = new Texture("spikeball.png");
+        txrSpike = new Texture("obstacles/spikeball.png");
 
         asprSpike = new Array<Sprite>(false, 4);
         for (int i = 0; i < 4; i++) {
