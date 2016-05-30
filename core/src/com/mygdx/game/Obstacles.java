@@ -64,7 +64,13 @@ public class Obstacles {
 
         for (int i = 0; i < 4; i++) {
             asprSpike.get(i).draw(batch);
-            asprSpike.get(i).translateX((nMelons / 2) + 3);
+            //control spike speed up to certain point
+            if (nMelons < 22) {
+                asprSpike.get(i).translateX((nMelons / 2) + 3);
+            }
+            else {
+                asprSpike.get(i).translateX(14);
+            }
             arecSpike.get(i).setX(asprSpike.get(i).getX() + (nLeniency / 2));
             arecSpike.get(i).setY(asprSpike.get(i).getY() + (nLeniency / 2));
             if (asprSpike.get(i).getX() > nWid) {
