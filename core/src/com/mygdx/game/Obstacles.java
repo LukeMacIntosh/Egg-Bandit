@@ -16,7 +16,7 @@ public class Obstacles {
     Texture txrSpike, txrMelon;
     Music mMeloncollected, mSpikehit;
     int nSpikeStatus, nMelonStatus, nRan, nLowRange, nHighRange;
-    int nHei = 1080, nWid = 1920, nLeniency;
+    int nHei = 1080, nWid = 1920, nSpikeLen, nMelonLen;
     float fX, fY;
     Array<Sprite> asprSpike;
     Array<Rectangle> arecSpike;
@@ -24,17 +24,20 @@ public class Obstacles {
     public float fTimer2;
 
     public Obstacles() {
+        //hitbox reduction amount
+        nSpikeLen = 150;
+        nMelonLen = 100;
+
         mMeloncollected = Gdx.audio.newMusic(Gdx.files.internal("sounds/meloncollected.wav"));
         mSpikehit = Gdx.audio.newMusic(Gdx.files.internal("sounds/spikehit.wav"));
         txrMelon = new Texture("obstacles/watermelon1.png");
         sprMelon = new Sprite(txrMelon, 0, 0, 512, 512);
         sprMelon.setSize(256, 256);
-        recMelonBox = new Rectangle(0f, 0f, sprMelon.getWidth(), sprMelon.getHeight());
+        recMelonBox = new Rectangle(0f, 0f, sprMelon.getWidth() - 200, sprMelon.getHeight() - 200);
         //recMelonBox.x = (int) Math.floor(Math.random() * (nWid - sprMelon.getWidth() + 1));
-        recMelonBox.x = nWid / 2 - sprMelon.getWidth() / 2;
-        recMelonBox.y = nHei * 3 / 4;
-        sprMelon.setPosition(recMelonBox.x, recMelonBox.y);
-        nLeniency = 150;
+        recMelonBox.x = nWid / 2 - sprMelon.getWidth() / 2 + nMelonLen;
+        recMelonBox.y = nHei * 3 / 4 + nMelonLen;
+        sprMelon.setPosition(recMelonBox.x - nMelonLen, recMelonBox.y - nMelonLen);
 
         //range for random spike y coordinates
         nLowRange = nWid / 6;
@@ -55,7 +58,7 @@ public class Obstacles {
         arecSpike = new Array<Rectangle>(false, 4);
         for (int i = 0; i < 4; i++) {
             arecSpike.add(new Rectangle());
-            arecSpike.get(i).setSize(asprSpike.get(i).getWidth() - (nLeniency), asprSpike.get(i).getHeight() - (nLeniency));
+            arecSpike.get(i).setSize(asprSpike.get(i).getWidth() - (nSpikeLen), asprSpike.get(i).getHeight() - (nSpikeLen));
         }
     }
 
@@ -65,14 +68,14 @@ public class Obstacles {
         for (int i = 0; i < 4; i++) {
             asprSpike.get(i).draw(batch);
             //control spike speed up to certain point
-            if (nMelons < 22) {
-                asprSpike.get(i).translateX((nMelons / 2) + 3);
+            if (nMelons < 7) {
+                asprSpike.get(i).translateX((2 * nMelons) + 1);
             }
             else {
-                asprSpike.get(i).translateX(14);
+                asprSpike.get(i).translateX(15);
             }
-            arecSpike.get(i).setX(asprSpike.get(i).getX() + (nLeniency / 2));
-            arecSpike.get(i).setY(asprSpike.get(i).getY() + (nLeniency / 2));
+            arecSpike.get(i).setX(asprSpike.get(i).getX() + (nSpikeLen / 2));
+            arecSpike.get(i).setY(asprSpike.get(i).getY() + (nSpikeLen / 2));
             if (asprSpike.get(i).getX() > nWid) {
                 asprSpike.get(i).setX(-txrSpike.getWidth());
                 asprSpike.get(i).setY((int) Math.floor(Math.random() * (nHighRange - nLowRange + 1) + nLowRange));
