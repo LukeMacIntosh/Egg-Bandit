@@ -51,7 +51,7 @@ public class Character {
 
     public void update(float delta) {
         //fGravity = gravity strength
-        fGravity -= (40 * delta);
+        fGravity -= (45 * delta);
         recHB.y += fGravity;
         sprGengar.setPosition(recHB.x, recHB.y);
     }
@@ -84,8 +84,8 @@ public class Character {
 
     public void jump() {
         //add jump height
-        fGravity = 33;
+        fGravity = 36;
         isGrounded = false;
-        nSpeed = 500; //air speed
+        nSpeed = 600; //air speed
     }
 }

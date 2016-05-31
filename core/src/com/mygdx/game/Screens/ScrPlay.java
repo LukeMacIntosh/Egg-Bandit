@@ -43,10 +43,11 @@ public class ScrPlay implements Screen, InputProcessor {
     boolean isTouchingL = false, isTouchingR = false, isStill = false;
     public static Texture backgroundTexture;
     public static Sprite backgroundSprite;
-    float fTimer, fTimer2;
-    Texture txrMelons;
-    TextureRegion[] trAnimFrames;
+    float fTimer, fTimer2, faniTimer;
+    Texture txrMelons, txrBirds;
+    TextureRegion[] trAnimFrames, trAnimFrames2;
     Animation aniMelons;
+    Animation[] araniBirds;
 
     public ScrPlay(Main main) {  //Referencing the main class.
         this.main = main;
@@ -99,10 +100,26 @@ public class ScrPlay implements Screen, InputProcessor {
             }
         }
         aniMelons = new Animation(1f / 8f, trAnimFrames);
+
+        //birds animation
+        araniBirds = new Animation[4];
+        txrBirds = new Texture("obstacles/birdssheet.png");
+        TextureRegion[][] trAnimTemp2 = TextureRegion.split(txrBirds, 128, 128);
+        trAnimFrames2 = new TextureRegion[2];
+        int index2 = 0;
+
+        for (int j = 0; j < 2; j++) {
+            trAnimFrames2[index2++] = trAnimTemp2[0][j];
+        }
+        for(int x = 0; x < 4; x++) {
+            araniBirds[x] = new Animation(1f / 6f, trAnimFrames2);
+        }
     }
 
     public void renderBackground() {
+        sbChar.begin();
         backgroundSprite.draw(sbChar);
+        sbChar.end();
     }
 
     @Override
@@ -116,12 +133,13 @@ public class ScrPlay implements Screen, InputProcessor {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         sbChar.setProjectionMatrix(ocCam.combined);
         ocCam.update();
-        sbChar.begin();
         renderBackground();
 
+        faniTimer += Gdx.graphics.getDeltaTime();
         fTimer -= Gdx.graphics.getDeltaTime();
         obstacles.fTimer2 += Gdx.graphics.getDeltaTime();
 
+        sbChar.begin();
         if (fTimer > 0 && fTimer < 1) {
             nCounter = 1;
         } else if (fTimer > 1 && fTimer < 2) {
@@ -218,11 +236,18 @@ public class ScrPlay implements Screen, InputProcessor {
             sbChar.end();
         }
         // if statement for the Melon sound
-        sbChar.begin();
-        sbChar.end();
         stage.act();
         stage.draw();
         main.prefsSCORE.flush();
+
+        //Animate
+        sbChar.begin();
+        for (int i = 0; i < 4; i++) {
+            sbChar.draw(araniBirds[i].getKeyFrame(faniTimer, true), obstacles.arecSpike.get(i).getX() - 64,
+                    obstacles.arecSpike.get(i).getY() - 64);
+        }
+        //sbChar.draw(araniBirds[0].getKeyFrame(faniTimer, true), 0, 0);
+        sbChar.end();
     }
 
     @Override

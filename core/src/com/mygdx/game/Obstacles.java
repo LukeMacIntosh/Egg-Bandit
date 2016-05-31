@@ -4,8 +4,10 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
@@ -18,14 +20,18 @@ public class Obstacles {
     int nSpikeStatus, nMelonStatus, nRan, nLowRange, nHighRange;
     int nHei = 1080, nWid = 1920, nSpikeLen, nMelonLen;
     float fX, fY;
-    Array<Sprite> asprSpike;
-    Array<Rectangle> arecSpike;
+    public Array<Sprite> asprSpike;
+    public Array<Rectangle> arecSpike;
     public boolean isGrabable = true;
-    public float fTimer2;
+    public float fTimer, fTimer2;
+    Texture txrBirds;
+    TextureRegion[] trAnimFrames2;
+    Animation aniBirds;
+   SpriteBatch sbAnim;
 
     public Obstacles() {
         //hitbox reduction amount
-        nSpikeLen = 150;
+        nSpikeLen = 125;
         nMelonLen = 100;
 
         mMeloncollected = Gdx.audio.newMusic(Gdx.files.internal("sounds/meloncollected.wav"));
@@ -58,21 +64,24 @@ public class Obstacles {
         arecSpike = new Array<Rectangle>(false, 4);
         for (int i = 0; i < 4; i++) {
             arecSpike.add(new Rectangle());
-            arecSpike.get(i).setSize(asprSpike.get(i).getWidth() - (nSpikeLen), asprSpike.get(i).getHeight() - (nSpikeLen));
+            arecSpike.get(i).setSize(128 - (nSpikeLen), 128 - (nSpikeLen));
         }
     }
 
     public void draw(SpriteBatch batch) {
         sprMelon.draw(batch);
-
         for (int i = 0; i < 4; i++) {
-            asprSpike.get(i).draw(batch);
+            fTimer+=Gdx.graphics.getDeltaTime();
+            /*batch.draw(aniBirds.getKeyFrame(fTimer, true), arecSpike.get(i).getX(),
+                    arecSpike.get(i).getY());*/
+
+            //asprSpike.get(i).draw(batch);
             //control spike speed up to certain point
             if (nMelons < 7) {
                 asprSpike.get(i).translateX((2 * nMelons) + 1);
             }
             else {
-                asprSpike.get(i).translateX(15);
+                asprSpike.get(i).translateX(14);
             }
             arecSpike.get(i).setX(asprSpike.get(i).getX() + (nSpikeLen / 2));
             arecSpike.get(i).setY(asprSpike.get(i).getY() + (nSpikeLen / 2));
