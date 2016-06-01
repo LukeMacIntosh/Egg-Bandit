@@ -2,7 +2,6 @@ package com.mygdx.game.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
@@ -15,16 +14,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Main;
 import com.mygdx.game.TbMenu;
 import com.mygdx.game.TbsMenu;
-
-import java.awt.Font;
 
 /**
  * Created by luke on 2016-04-20.
@@ -59,8 +53,8 @@ public class ScrMenu implements Screen, InputProcessor {
         batch = new SpriteBatch();
         backgroundTexture = new Texture("backgrounds/menu.jpg");
         backgroundSprite = new Sprite(backgroundTexture);
-        screenName = new BitmapFont(Gdx.files.internal("fonts/label.fnt"));
-        screenName.getData().setScale(2, 2);
+        screenName = new BitmapFont(Gdx.files.internal("fonts/8bit.fnt"));
+        screenName.getData().setScale(5, 5);
         screenName.setColor(Color.BLUE);
         tbPlay = new TbMenu("PLAY", tbsMenu);
         tbInstruct = new TbMenu("INSTRUCTIONS", tbsMenu);
@@ -102,7 +96,7 @@ public class ScrMenu implements Screen, InputProcessor {
         batch.setProjectionMatrix(ocCam.combined);
         batch.begin();
         renderBackground();
-        screenName.draw(batch, "SF GAME", 600, 1000);
+        screenName.draw(batch, "SF GAME", 450, 950);
         batch.end();
         stage.act();
         stage.draw();

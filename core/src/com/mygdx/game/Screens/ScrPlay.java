@@ -71,10 +71,11 @@ public class ScrPlay implements Screen, InputProcessor {
         ocCam.position.set(fGameworldWidth / 2, fGameworldHeight / 2, 0);
         character = new Character();
         obstacles = new Obstacles();
-        bmMelons = new BitmapFont(Gdx.files.internal("fonts/label.fnt"));
+        bmMelons = new BitmapFont(Gdx.files.internal("fonts/8bit.fnt"));
+        bmMelons.getData().setScale(3, 3);
         bmMelons.setColor(Color.RED);
-        bmStart = new BitmapFont(Gdx.files.internal("fonts/label.fnt"));
-        bmStart.getData().setScale(5, 5);
+        bmStart = new BitmapFont(Gdx.files.internal("fonts/8bit.fnt"));
+        bmStart.getData().setScale(10, 10);
         character.setPosition(nWid / 2 - 64, 11);
         Gdx.input.setInputProcessor(stage);
         Gdx.input.setInputProcessor(this);
@@ -111,7 +112,7 @@ public class ScrPlay implements Screen, InputProcessor {
         for (int j = 0; j < 2; j++) {
             trAnimFrames2[index2++] = trAnimTemp2[0][j];
         }
-        for(int x = 0; x < 4; x++) {
+        for (int x = 0; x < 4; x++) {
             araniBirds[x] = new Animation(1f / 6f, trAnimFrames2);
         }
     }
