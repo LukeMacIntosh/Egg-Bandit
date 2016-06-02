@@ -57,7 +57,7 @@ public class ScrPlay implements Screen, InputProcessor {
         backgroundTexture = new Texture("backgrounds/Play.jpg");
         backgroundSprite = new Sprite(backgroundTexture);
         mJump = Gdx.audio.newMusic(Gdx.files.internal("sounds/jump.mp3"));
-        mInGameSong = Gdx.audio.newMusic(Gdx.files.internal("music/ingame1v2.wav"));
+        mInGameSong = Gdx.audio.newMusic(Gdx.files.internal("music/ingame1v2.mp3"));
         mInGameSong.play();
         mInGameSong.setLooping(true);
         stage = new Stage();

@@ -31,7 +31,7 @@ public class ScrMenu implements Screen, InputProcessor {
     Stage stage;
     SpriteBatch batch;
     BitmapFont screenName;
-    Music mMenusong = Gdx.audio.newMusic(Gdx.files.internal("music/menu.wav"));
+    Music mMenusong = Gdx.audio.newMusic(Gdx.files.internal("music/menu.mp3"));
     Viewport viewport;
     OrthographicCamera ocCam;
     float fGameworldWidth = 1920, fGameworldHeight = 1080;

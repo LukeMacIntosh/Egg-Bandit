@@ -46,7 +46,7 @@ public class ScrGameover implements Screen, InputProcessor {
     }
 
     public void show() {
-        mGameover = Gdx.audio.newMusic(Gdx.files.internal("music/gameover.wav"));
+        mGameover = Gdx.audio.newMusic(Gdx.files.internal("music/gameover.mp3"));
         mGameover.play();
         mGameover.setLooping(true);
         backgroundTexture = new Texture("backgrounds/gameover.jpg");

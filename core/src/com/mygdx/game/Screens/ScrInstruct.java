@@ -49,7 +49,7 @@ public class ScrInstruct implements Screen, InputProcessor {
         batch = new SpriteBatch();
         obstacles = new Obstacles();
         screenName = new BitmapFont(Gdx.files.internal("fonts/8bit.fnt"));
-        //screenName.getData().setScale(2, 2);
+        screenName.getData().setScale(2, 2);
         screenName.setColor(Color.WHITE);
         ocCam = new OrthographicCamera();
         ocCam.setToOrtho(false);
@@ -82,7 +82,7 @@ public class ScrInstruct implements Screen, InputProcessor {
         batch.setProjectionMatrix(ocCam.combined);
         batch.begin();
         renderBackground();
-        screenName.draw(batch, "INSTRUCTIONS SCREEN", 525, 1000);
+        screenName.draw(batch, "INSTRUCTIONS", 550, 1000);
         batch.end();
         stage.act();
         stage.draw();

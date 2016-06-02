@@ -27,7 +27,7 @@ public class Obstacles {
     Texture txrBirds;
     TextureRegion[] trAnimFrames2;
     Animation aniBirds;
-   SpriteBatch sbAnim;
+    SpriteBatch sbAnim;
 
     public Obstacles() {
         //hitbox reduction amount
@@ -35,7 +35,7 @@ public class Obstacles {
         nMelonLen = 100;
 
         mMeloncollected = Gdx.audio.newMusic(Gdx.files.internal("sounds/meloncollected.wav"));
-        mSpikehit = Gdx.audio.newMusic(Gdx.files.internal("sounds/spikehit.wav"));
+        mSpikehit = Gdx.audio.newMusic(Gdx.files.internal("sounds/birdhit.wav"));
         txrMelon = new Texture("obstacles/watermelon1.png");
         sprMelon = new Sprite(txrMelon, 0, 0, 512, 512);
         sprMelon.setSize(256, 256);
