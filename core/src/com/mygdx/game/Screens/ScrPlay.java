@@ -40,13 +40,12 @@ public class ScrPlay implements Screen, InputProcessor {
     Music mJump, mInGameSong;
     float fGameworldWidth = 1920, fGameworldHeight = 1080;
     int picID = 1, nHei = 1080, nWid = 1920, nTouchCount = 0, nCounter = 0;
-    boolean isTouchingL = false, isTouchingR = false, isStill = false;
+    boolean isTouchingL = false, isTouchingR = false;
     public static Texture backgroundTexture;
     public static Sprite backgroundSprite;
-    float fTimer, fTimer2, faniTimer;
-    Texture txrMelons, txrBirds;
-    TextureRegion[] trAnimFrames, trAnimFrames2;
-    Animation aniMelons;
+    float fTimer, faniTimer;
+    Texture txrBirds;
+    TextureRegion[] trAnimFrames2;
     Animation[] araniBirds;
 
     public ScrPlay(Main main) {  //Referencing the main class.
@@ -88,19 +87,6 @@ public class ScrPlay implements Screen, InputProcessor {
         isTouchingL = false;
         isTouchingR = false;
         nTouchCount = 0;
-
-        //watermelons animation
-        txrMelons = new Texture("obstacles/watermelonsheet.png");
-        TextureRegion[][] trAnimTemp = TextureRegion.split(txrMelons, 256, 256);
-        trAnimFrames = new TextureRegion[4];
-        int index = 0;
-
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 2; j++) {
-                trAnimFrames[index++] = trAnimTemp[j][i];
-            }
-        }
-        aniMelons = new Animation(1f / 8f, trAnimFrames);
 
         //birds animation
         araniBirds = new Animation[4];
@@ -219,7 +205,7 @@ public class ScrPlay implements Screen, InputProcessor {
             picID = 1;
         }
 
-        //spike hit detection, goes to game over screen
+        //Bird hit detection, goes to game over screen
         if (obstacles.bounds(character.recHB)) {
             if (obstacles.nMelons > main.prefsSCORE.getInteger("Latest Highscore")) {
                 main.prefsSCORE.putInteger("Latest Highscore", obstacles.nMelons);
@@ -229,13 +215,6 @@ public class ScrPlay implements Screen, InputProcessor {
             main.updateState();
             mInGameSong.stop();
         }
-        //animate melon
-        if (!obstacles.isGrabable) {
-            sbChar.begin();
-            sbChar.draw(aniMelons.getKeyFrame(obstacles.fTimer2, false), nWid / 2 -
-                    obstacles.sprMelon.getWidth() / 2, nHei * 3 / 4);
-            sbChar.end();
-        }
         // if statement for the Melon sound
         stage.act();
         stage.draw();
@@ -244,31 +223,14 @@ public class ScrPlay implements Screen, InputProcessor {
         //Animate
         sbChar.begin();
         for (int i = 0; i < 4; i++) {
-            sbChar.draw(araniBirds[i].getKeyFrame(faniTimer, true), obstacles.arecSpike.get(i).getX() - 64,
-                    obstacles.arecSpike.get(i).getY() - 64);
+            sbChar.draw(araniBirds[i].getKeyFrame(faniTimer, true), obstacles.arecBird.get(i).getX() - 64,
+                    obstacles.arecBird.get(i).getY() - 64);
         }
-        //sbChar.draw(araniBirds[0].getKeyFrame(faniTimer, true), 0, 0);
         sbChar.end();
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-/*        System.out.println("touch");
-        nTouchCount++;
-        if (nTouchCount == 1) {
-            if (screenX < Gdx.graphics.getWidth() / 2) {
-                isTouchingL = true;
-                isTouchingR = false;
-            }
-            if (screenX > Gdx.graphics.getWidth() / 2) {
-                isTouchingR = true;
-                isTouchingL = false;
-            }
-        }
-        if (nTouchCount == 2) {
-            isTouchingR = false;
-            isTouchingL = false;
-        }*/
         return false;
     }
 
