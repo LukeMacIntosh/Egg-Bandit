@@ -96,7 +96,7 @@ public class ScrMenu implements Screen, InputProcessor {
         batch.setProjectionMatrix(ocCam.combined);
         batch.begin();
         renderBackground();
-        screenName.draw(batch, "EGG BANDIT", 450, 950);
+        screenName.draw(batch, "EGG BANDIT", 200, 950);
         batch.end();
         stage.act();
         stage.draw();
