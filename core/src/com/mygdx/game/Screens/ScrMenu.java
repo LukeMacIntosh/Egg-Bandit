@@ -55,7 +55,7 @@ public class ScrMenu implements Screen, InputProcessor {
         backgroundSprite = new Sprite(backgroundTexture);
         screenName = new BitmapFont(Gdx.files.internal("fonts/8bit.fnt"));
         screenName.getData().setScale(5, 5);
-        screenName.setColor(Color.BLUE);
+        screenName.setColor(Color.WHITE);
         tbPlay = new TbMenu("PLAY", tbsMenu);
         tbInstruct = new TbMenu("INSTRUCTIONS", tbsMenu);
         // Gdx.graphics.getWidth/Height is only necessary for the buttons
@@ -96,7 +96,7 @@ public class ScrMenu implements Screen, InputProcessor {
         batch.setProjectionMatrix(ocCam.combined);
         batch.begin();
         renderBackground();
-        screenName.draw(batch, "SF GAME", 450, 950);
+        screenName.draw(batch, "EGG BANDIT", 450, 950);
         batch.end();
         stage.act();
         stage.draw();
