@@ -20,9 +20,9 @@ public class TbsMenu extends TextButton.TextButtonStyle {
         skin.add("fonts/8bit.fnt", font);
         buttonAtlas = new TextureAtlas(Gdx.files.internal("button/MenuButton.pack"));
         skin.addRegions(buttonAtlas);
-        this.up = skin.getDrawable("MenuButtonUp");
-        this.down = skin.getDrawable("MenuButtonDown");
-        this.checked = skin.getDrawable("MenuButtonUp");
+        this.up = skin.getDrawable("MenuButtonDown");
+        this.down = skin.getDrawable("MenuButtonUp");
+        this.checked = skin.getDrawable("MenuButtonDown");
         this.font = skin.getFont("fonts/8bit.fnt");
     }
 }

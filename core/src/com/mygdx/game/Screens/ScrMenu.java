@@ -63,10 +63,10 @@ public class ScrMenu implements Screen, InputProcessor {
         // but for some reason the buttons didn't like that and they need special treatment.
         tbPlay.setSize(Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() / 4);
         tbPlay.setY(Gdx.graphics.getHeight() / 2 - Gdx.graphics.getHeight() / 16);
-        tbPlay.setX(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 6);
+        tbPlay.setX(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 7);
         tbInstruct.setSize(Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() / 4);
         tbInstruct.setY(Gdx.graphics.getHeight() / 2 - Gdx.graphics.getHeight() / 3);
-        tbInstruct.setX(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 6);
+        tbInstruct.setX(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 7);
         stage.addActor(tbPlay);
         stage.addActor(tbInstruct);
         //mMenusong = Gdx.audio.newMusic(Gdx.files.internal("music/menu.wav"));
