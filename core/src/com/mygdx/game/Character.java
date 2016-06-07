@@ -1,14 +1,9 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Character {
     public Rectangle recHB;
-    Sprite sprGengar;
-    Texture txrReg, txrFlip;
     float fGravity;
     public boolean isGrounded = false;
     public int nSpeed = 300;
@@ -16,13 +11,8 @@ public class Character {
 
 
     public Character() {
-        txrReg = new Texture("dude/gengar.png");
-        txrFlip = new Texture("dude/gengarf.png");
-        sprGengar = new Sprite(txrReg, 0, 0, 128, 128);
-        sprGengar.setSize(nWid / 10, nWid / 10);
-        recHB = new Rectangle(0f, 0f, sprGengar.getWidth(),
-                sprGengar.getHeight());
-        this.setPosition(0, 0);
+        recHB = new Rectangle(0f, 0f, nWid / 10,
+                nHei / 10);
         fGravity = 0;
     }
 
@@ -41,10 +31,10 @@ public class Character {
         if (type == 2) {
             setPosition(x, recHB.y);
         } else if (type == 3) {
-            x -= sprGengar.getWidth();
+            x -= recHB.getWidth();
             setPosition(x, recHB.y);
         } else if (type == 4) {
-            y -= sprGengar.getHeight();
+            y -= recHB.getHeight();
             setPosition(recHB.x, y);
         }
     }
@@ -53,33 +43,19 @@ public class Character {
         //fGravity = gravity strength
         fGravity -= (45 * delta);
         recHB.y += fGravity;
-        sprGengar.setPosition(recHB.x, recHB.y);
     }
 
     public void setPosition(float x, float y) {
         recHB.x = x;
         recHB.y = y;
-        sprGengar.setPosition(x, y);
     }
 
     public void moveLeft(float delta) {
         recHB.x -= (nSpeed * delta);
-        sprGengar.setPosition(recHB.x, recHB.y);
     }
 
     public void moveRight(float delta) {
         recHB.x += (nSpeed * delta);
-        sprGengar.setPosition(recHB.x, recHB.y);
-    }
-
-    public void draw1(SpriteBatch batch) {
-        sprGengar.setTexture(txrReg);
-        sprGengar.draw(batch);
-    }
-
-    public void draw2(SpriteBatch batch) {
-        sprGengar.setTexture(txrFlip);
-        sprGengar.draw(batch);
     }
 
     public void jump() {

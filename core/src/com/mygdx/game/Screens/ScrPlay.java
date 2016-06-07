@@ -31,7 +31,7 @@ public class ScrPlay implements Screen, InputProcessor {
     TbsMenu tbsMenu;
     Stage stage;
     SpriteBatch sbChar;
-    BitmapFont bmMelons, bmStart;
+    BitmapFont bmNests, bmStart;
     OrthographicCamera ocCam;
     Rectangle recBDown, recBUp, recBLeft, recBRight;
     Character character;
@@ -44,9 +44,12 @@ public class ScrPlay implements Screen, InputProcessor {
     public static Texture backgroundTexture;
     public static Sprite backgroundSprite;
     float fTimer, faniTimer;
-    Texture txrBirds;
-    TextureRegion[] trAnimFrames2;
+    Texture txrBirds, txrIdleSheet, txrRunSheet, txrFlySheet, txrGrabSheet;
+    TextureRegion[] trAnimFrames2, trIdleFrames, trRunFrames, trFlyFrames, trGrabFrames;
+    TextureRegion[] trIdleFlipFrames, trRunFlipFrames, trFlyFlipFrames, trGrabFlipFrames;
     Animation[] araniBirds;
+    Animation aniIdle, aniRun, aniFly, aniGrab;
+    Animation aniIdleFlip, aniRunFlip, aniFlyFlip, aniGrabFlip;
 
     public ScrPlay(Main main) {  //Referencing the main class.
         this.main = main;
@@ -70,9 +73,9 @@ public class ScrPlay implements Screen, InputProcessor {
         ocCam.position.set(fGameworldWidth / 2, fGameworldHeight / 2, 0);
         character = new Character();
         obstacles = new Obstacles();
-        bmMelons = new BitmapFont(Gdx.files.internal("fonts/8bit.fnt"));
-        bmMelons.getData().setScale(3, 3);
-        bmMelons.setColor(Color.RED);
+        bmNests = new BitmapFont(Gdx.files.internal("fonts/8bit.fnt"));
+        bmNests.getData().setScale(3, 3);
+        bmNests.setColor(Color.RED);
         bmStart = new BitmapFont(Gdx.files.internal("fonts/8bit.fnt"));
         bmStart.getData().setScale(10, 10);
         character.setPosition(nWid / 2 - 64, 11);
@@ -83,24 +86,97 @@ public class ScrPlay implements Screen, InputProcessor {
         recBLeft = new Rectangle(0, 0, 10, nHei);
         recBRight = new Rectangle(nWid - 10, 0, 10, nHei);
         fTimer = 3;
-        obstacles.nMelons = 0;
+        obstacles.nNests = 0;
         isTouchingL = false;
         isTouchingR = false;
         nTouchCount = 0;
+
 
         //birds animation
         araniBirds = new Animation[4];
         txrBirds = new Texture("obstacles/birdssheet.png");
         TextureRegion[][] trAnimTemp2 = TextureRegion.split(txrBirds, 128, 128);
         trAnimFrames2 = new TextureRegion[2];
-        int index2 = 0;
+        int nBird = 0;
 
         for (int j = 0; j < 2; j++) {
-            trAnimFrames2[index2++] = trAnimTemp2[0][j];
+            trAnimFrames2[nBird++] = trAnimTemp2[0][j];
         }
         for (int x = 0; x < 4; x++) {
             araniBirds[x] = new Animation(1f / 6f, trAnimFrames2);
         }
+
+
+        //idle animations
+        txrIdleSheet = new Texture("character/character_idle.png");
+        TextureRegion[][] trIdleTemp = TextureRegion.split(txrIdleSheet, 220, 240),
+        trIdleTempFlip = TextureRegion.split(txrIdleSheet, 220, 240);
+        trIdleFrames = new TextureRegion[8];
+        trIdleFlipFrames = new TextureRegion[8];
+        int nIdle = 0;
+
+        for (int j = 0; j < 8; j++) {
+            trIdleFlipFrames[nIdle] = trIdleTempFlip[0][j];
+            trIdleFrames[nIdle] = trIdleTemp[0][j];
+            trIdleFlipFrames[nIdle].flip(true, false);
+            nIdle++;
+        }
+        aniIdle = new Animation(1f / 6f, trIdleFrames);
+        aniIdleFlip = new Animation(1f / 6f, trIdleFlipFrames);
+
+
+        //running animations
+        txrRunSheet = new Texture("character/character_running.png");
+        TextureRegion[][] trRunTemp = TextureRegion.split(txrRunSheet, 220, 240),
+                trRunTempFlip = TextureRegion.split(txrRunSheet, 220, 240);
+        trRunFrames = new TextureRegion[8];
+        trRunFlipFrames = new TextureRegion[8];
+        int nRun = 0;
+
+        for (int j = 0; j < 8; j++) {
+            trRunFlipFrames[nRun] = trRunTempFlip[0][j];
+            trRunFrames[nRun] = trRunTemp[0][j];
+            trRunFlipFrames[nRun].flip(true, false);
+            nRun++;
+        }
+        aniRun = new Animation(1f / 12f, trRunFrames);
+        aniRunFlip = new Animation(1f / 12f, trRunFlipFrames);
+
+
+        //floating animations
+        txrFlySheet = new Texture("character/character_floating.png");
+        TextureRegion[][] trFlyTemp = TextureRegion.split(txrFlySheet, 220, 240),
+                trFlyTempFlip = TextureRegion.split(txrFlySheet, 220, 240);
+        trFlyFrames = new TextureRegion[4];
+        trFlyFlipFrames = new TextureRegion[4];
+        int nFly = 0;
+
+        for (int j = 0; j < 4; j++) {
+            trFlyFlipFrames[nFly] = trFlyTempFlip[0][j];
+            trFlyFrames[nFly] = trFlyTemp[0][j];
+            trFlyFlipFrames[nFly].flip(true, false);
+            nFly++;
+        }
+        aniFly = new Animation(1f / 12f, trFlyFrames);
+        aniFlyFlip = new Animation(1f / 12f, trFlyFlipFrames);
+
+
+        //collect animations
+        txrGrabSheet = new Texture("character/character_collect.png");
+        TextureRegion[][] trGrabTemp = TextureRegion.split(txrGrabSheet, 220, 240),
+                trGrabTempFlip = TextureRegion.split(txrGrabSheet, 220, 240);
+        trGrabFrames = new TextureRegion[6];
+        trGrabFlipFrames = new TextureRegion[6];
+        int nGrab = 0;
+
+        for (int j = 0; j < 6; j++) {
+            trGrabFlipFrames[nGrab] = trGrabTempFlip[0][j];
+            trGrabFrames[nGrab] = trGrabTemp[0][j];
+            trGrabFlipFrames[nGrab].flip(true, false);
+            nGrab++;
+        }
+        aniGrab = new Animation(1f / 6f, trGrabFrames);
+        aniGrabFlip = new Animation(1f / 6f, trGrabFlipFrames);
     }
 
     public void renderBackground() {
@@ -136,13 +212,8 @@ public class ScrPlay implements Screen, InputProcessor {
         } else if (fTimer < 0) {
             nCounter = -1;
         }
-        if (picID == 1) {
-            character.draw1(sbChar);
-        } else {
-            character.draw2(sbChar);
-        }
         obstacles.draw(sbChar);
-        bmMelons.draw(sbChar, Integer.toString(obstacles.nMelons), nWid - 200, nHei - 50);
+        bmNests.draw(sbChar, Integer.toString(obstacles.nNests), nWid - 200, nHei - 50);
         if (fTimer > 0 && fTimer < 3) {
             bmStart.draw(sbChar, Integer.toString(nCounter), 800, 800);
         } else {
@@ -176,10 +247,15 @@ public class ScrPlay implements Screen, InputProcessor {
             character.action(3, nWid - 10, 0);
         }
 
-        //Android Controls
+        //Android Controls & Animation Conditions
+        sbChar.begin();
         if (Gdx.input.isTouched(0) && Gdx.input.getX(0) < Gdx.graphics.getWidth() / 2
                 || Gdx.input.isTouched(1) && Gdx.input.getX(1) < Gdx.graphics.getWidth() / 2) {
             character.moveLeft(Gdx.graphics.getDeltaTime());
+            if (character.isGrounded) {
+                sbChar.draw(aniRunFlip.getKeyFrame(faniTimer, true), character.recHB.getX(),
+                        character.recHB.getY());
+            }
             if (Gdx.input.isTouched(0) && Gdx.input.isTouched(1)) {
             } else {
                 picID = 2;
@@ -188,11 +264,53 @@ public class ScrPlay implements Screen, InputProcessor {
         if (Gdx.input.isTouched(0) && Gdx.input.getX(0) > Gdx.graphics.getWidth() / 2
                 || Gdx.input.isTouched(1) && Gdx.input.getX(1) > Gdx.graphics.getWidth() / 2) {
             character.moveRight(Gdx.graphics.getDeltaTime());
+            if (character.isGrounded) {
+                sbChar.draw(aniRun.getKeyFrame(faniTimer, true), character.recHB.getX(),
+                        character.recHB.getY());
+            }
             if (Gdx.input.isTouched(0) && Gdx.input.isTouched(1)) {
             } else {
                 picID = 1;
             }
         }
+        if (!Gdx.input.isTouched() && character.isGrounded) {
+            if (picID == 1) {
+                sbChar.draw(aniIdle.getKeyFrame(faniTimer, true), character.recHB.getX(),
+                        character.recHB.getY());
+            }
+            else if (picID == 2) {
+                sbChar.draw(aniIdleFlip.getKeyFrame(faniTimer,true), character.recHB.getX(),
+                        character.recHB.getY());
+            }
+        }
+
+        //for floating animation
+        if (!character.isGrounded && picID == 1 && obstacles.isGrabable) {
+            sbChar.draw(aniFly.getKeyFrame(faniTimer, true), character.recHB.getX(),
+                    character.recHB.getY());
+        }
+        else if (!character.isGrounded && picID == 2 && obstacles.isGrabable) {
+            sbChar.draw(aniFlyFlip.getKeyFrame(faniTimer, true), character.recHB.getX(),
+                    character.recHB.getY());
+        }
+
+        //for grab animation
+        if (obstacles.isAnimate) {
+            obstacles.isAnimate = false;
+            faniTimer = 0;
+        }
+        if (!obstacles.isGrabable && picID == 1) {
+            obstacles.isAnimate = false;
+            sbChar.draw(aniGrab.getKeyFrame(faniTimer, false), character.recHB.getX(),
+                    character.recHB.getY());
+        }
+        else if (!obstacles.isGrabable && picID == 2) {
+            obstacles.isAnimate = false;
+            sbChar.draw(aniGrabFlip.getKeyFrame(faniTimer, false), character.recHB.getX(),
+                    character.recHB.getY());
+        }
+
+        sbChar.end();
 
 
         //Keyboard Controls
@@ -207,15 +325,15 @@ public class ScrPlay implements Screen, InputProcessor {
 
         //Bird hit detection, goes to game over screen
         if (obstacles.bounds(character.recHB)) {
-            if (obstacles.nMelons > main.prefsSCORE.getInteger("Latest Highscore")) {
-                main.prefsSCORE.putInteger("Latest Highscore", obstacles.nMelons);
+            if (obstacles.nNests > main.prefsSCORE.getInteger("Latest Highscore")) {
+                main.prefsSCORE.putInteger("Latest Highscore", obstacles.nNests);
             }
             // hurt sound
             main.currentState = Main.GameState.OVER;
             main.updateState();
             mInGameSong.stop();
         }
-        // if statement for the Melon sound
+        // if statement for the Nest sound
         stage.act();
         stage.draw();
         main.prefsSCORE.flush();
@@ -237,7 +355,7 @@ public class ScrPlay implements Screen, InputProcessor {
     @Override
     public void dispose() {
         sbChar.dispose();
-        bmMelons.dispose();
+        bmNests.dispose();
     }
 
     @Override
