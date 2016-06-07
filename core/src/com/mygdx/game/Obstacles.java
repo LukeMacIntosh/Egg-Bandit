@@ -45,7 +45,7 @@ public class Obstacles {
         nLowRange = nWid / 6;
         nHighRange = nHei * 5 / 6;
 
-        //txrBird = new Texture("obstacles/spikeball.png");
+        txrBird = new Texture("obstacles/spikeball.png");
 
         asprBird = new Array<Sprite>(false, 4);
         for (int i = 0; i < 4; i++) {
