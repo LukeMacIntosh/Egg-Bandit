@@ -142,7 +142,12 @@ public class ScrPlay implements Screen, InputProcessor {
             character.draw2(sbChar);
         }
         obstacles.draw(sbChar);
-        bmMelons.draw(sbChar, Integer.toString(obstacles.nMelons), nWid - 200, nHei - 50);
+        if (obstacles.nMelons >= 0 && obstacles.nMelons <= 9) {
+            bmMelons.draw(sbChar, Integer.toString(obstacles.nMelons), nWid - 200, nHei - 50);
+        }
+        else if (obstacles.nMelons >= 10){
+            bmMelons.draw(sbChar, Integer.toString(obstacles.nMelons), nWid - 300, nHei - 50);
+        }
         if (fTimer > 0 && fTimer < 3) {
             bmStart.draw(sbChar, Integer.toString(nCounter), 800, 800);
         } else {

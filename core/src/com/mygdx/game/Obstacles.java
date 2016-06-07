@@ -4,10 +4,8 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
@@ -36,7 +34,7 @@ public class Obstacles {
         sprMelon = new Sprite(txrMelon, 0, 0, 512, 512);
         sprMelon.setSize(256, 256);
         recMelonBox = new Rectangle(0f, 0f, sprMelon.getWidth() - 200, sprMelon.getHeight() - 200);
-        //recMelonBox.x = (int) Math.floor(Math.random() * (nWid - sprMelon.getWidth() + 1));
+        ///recMelonBox.x = (int) Math.floor(Math.random() * (nWid - sprMelon.getWidth() + 1));
         recMelonBox.x = nWid / 2 - sprMelon.getWidth() / 2 + nMelonLen;
         recMelonBox.y = nHei * 3 / 4 + nMelonLen;
         sprMelon.setPosition(recMelonBox.x - nMelonLen, recMelonBox.y - nMelonLen);

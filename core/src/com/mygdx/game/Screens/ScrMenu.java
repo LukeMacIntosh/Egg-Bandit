@@ -57,16 +57,16 @@ public class ScrMenu implements Screen, InputProcessor {
         screenName.getData().setScale(5, 5);
         screenName.setColor(Color.WHITE);
         tbPlay = new TbMenu("PLAY", tbsMenu);
-        tbInstruct = new TbMenu("INSTRUCTIONS", tbsMenu);
+        tbInstruct = new TbMenu("INFO", tbsMenu);
         // Gdx.graphics.getWidth/Height is only necessary for the buttons
         // We scaled the whole game using out nWid and nHei variables,
         // but for some reason the buttons didn't like that and they need special treatment.
         tbPlay.setSize(Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() / 4);
         tbPlay.setY(Gdx.graphics.getHeight() / 2 - Gdx.graphics.getHeight() / 16);
-        tbPlay.setX(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 7);
+        tbPlay.setX(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 7 - Gdx.graphics.getWidth()/90);
         tbInstruct.setSize(Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() / 4);
         tbInstruct.setY(Gdx.graphics.getHeight() / 2 - Gdx.graphics.getHeight() / 3);
-        tbInstruct.setX(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 7);
+        tbInstruct.setX(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 7 - Gdx.graphics.getWidth()/90);
         stage.addActor(tbPlay);
         stage.addActor(tbInstruct);
         //mMenusong = Gdx.audio.newMusic(Gdx.files.internal("music/menu.wav"));
