@@ -1,13 +1,11 @@
-package com.mygdx.game;
+package com.mygdx.eggbandit;
 
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
@@ -30,7 +28,7 @@ public class Obstacles {
         nBirdLen = 125;
         nNestLen = 0;
 
-        mNestcollected = Gdx.audio.newMusic(Gdx.files.internal("sounds/Nestcollected.wav"));
+        mNestcollected = Gdx.audio.newMusic(Gdx.files.internal("sounds/nestcollected.mp3"));
         mBirdhit = Gdx.audio.newMusic(Gdx.files.internal("sounds/birdhit.wav"));
         txrNest = new Texture("obstacles/nestsprite.png");
         sprNest = new Sprite(txrNest, 0, 0, 200, 110);
@@ -67,12 +65,11 @@ public class Obstacles {
     public void draw(SpriteBatch batch) {
         sprNest.draw(batch);
         for (int i = 0; i < 4; i++) {
-            fTimer+=Gdx.graphics.getDeltaTime();
+            fTimer += Gdx.graphics.getDeltaTime();
             //control Bird speed up to certain point
             if (nNests < 7) {
                 asprBird.get(i).translateX((2 * nNests) + 1);
-            }
-            else {
+            } else {
                 asprBird.get(i).translateX(14);
             }
             arecBird.get(i).setX(asprBird.get(i).getX() + (nBirdLen / 2));

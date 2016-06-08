@@ -1,12 +1,12 @@
-package com.mygdx.game;
+package com.mygdx.eggbandit;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.mygdx.game.Screens.ScrInstruct;
-import com.mygdx.game.Screens.ScrMenu;
-import com.mygdx.game.Screens.ScrPlay;
-import com.mygdx.game.Screens.ScrGameover;
+import com.mygdx.eggbandit.Screens.ScrGameover;
+import com.mygdx.eggbandit.Screens.ScrMenu;
+import com.mygdx.eggbandit.Screens.ScrPlay;
+import com.mygdx.eggbandit.Screens.ScrInstruct;
 
 /**
  * Created by luke on 2016-04-20.

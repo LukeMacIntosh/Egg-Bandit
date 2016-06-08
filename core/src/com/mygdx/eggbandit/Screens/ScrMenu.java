@@ -1,4 +1,4 @@
-package com.mygdx.game.Screens;
+package com.mygdx.eggbandit.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -16,16 +16,15 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.game.Main;
-import com.mygdx.game.TbMenu;
-import com.mygdx.game.TbsMenu;
+import com.mygdx.eggbandit.TbMenu;
+import com.mygdx.eggbandit.TbsMenu;
 
 /**
  * Created by luke on 2016-04-20.
  */
 
 public class ScrMenu implements Screen, InputProcessor {
-    Main main;
+    com.mygdx.eggbandit.Main main;
     TbsMenu tbsMenu;
     TbMenu tbPlay, tbInstruct;
     Stage stage;
@@ -38,7 +37,7 @@ public class ScrMenu implements Screen, InputProcessor {
     public static Texture backgroundTexture;
     public static Sprite backgroundSprite;
 
-    public ScrMenu(Main main) { //Referencing the main class.
+    public ScrMenu(com.mygdx.eggbandit.Main main) { //Referencing the main class.
         this.main = main;
     }
 
@@ -63,10 +62,10 @@ public class ScrMenu implements Screen, InputProcessor {
         // but for some reason the buttons didn't like that and they need special treatment.
         tbPlay.setSize(Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() / 4);
         tbPlay.setY(Gdx.graphics.getHeight() / 2 - Gdx.graphics.getHeight() / 16);
-        tbPlay.setX(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 7 - Gdx.graphics.getWidth()/90);
+        tbPlay.setX(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 7 - Gdx.graphics.getWidth()/100);
         tbInstruct.setSize(Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() / 4);
         tbInstruct.setY(Gdx.graphics.getHeight() / 2 - Gdx.graphics.getHeight() / 3);
-        tbInstruct.setX(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 7 - Gdx.graphics.getWidth()/90);
+        tbInstruct.setX(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 7 - Gdx.graphics.getWidth()/100);
         stage.addActor(tbPlay);
         stage.addActor(tbInstruct);
         //mMenusong = Gdx.audio.newMusic(Gdx.files.internal("music/menu.wav"));
@@ -96,7 +95,7 @@ public class ScrMenu implements Screen, InputProcessor {
         batch.setProjectionMatrix(ocCam.combined);
         batch.begin();
         renderBackground();
-        screenName.draw(batch, "EGG BANDIT", 200, 950);
+        screenName.draw(batch, "EGG BANDIT", 200, 975);
         batch.end();
         stage.act();
         stage.draw();
@@ -105,7 +104,7 @@ public class ScrMenu implements Screen, InputProcessor {
     public void btnPlayListener() {
         tbPlay.addListener(new ChangeListener() {
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-                main.currentState = Main.GameState.PLAY;
+                main.currentState = com.mygdx.eggbandit.Main.GameState.PLAY;
                 main.updateState();
                 mMenusong.stop();
             }
@@ -115,7 +114,7 @@ public class ScrMenu implements Screen, InputProcessor {
     public void btnInstructListener() {
         tbInstruct.addListener(new ChangeListener() {
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-                main.currentState = Main.GameState.INSTRUCT;
+                main.currentState = com.mygdx.eggbandit.Main.GameState.INSTRUCT;
                 main.updateState();
             }
         });

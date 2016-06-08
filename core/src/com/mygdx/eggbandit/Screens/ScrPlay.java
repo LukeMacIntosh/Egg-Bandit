@@ -1,4 +1,4 @@
-package com.mygdx.game.Screens;
+package com.mygdx.eggbandit.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -18,16 +18,15 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.game.Main;
-import com.mygdx.game.Obstacles;
-import com.mygdx.game.TbsMenu;
-import com.mygdx.game.Character;
+import com.mygdx.eggbandit.Obstacles;
+import com.mygdx.eggbandit.TbsMenu;
+import com.mygdx.eggbandit.Character;
 
 /**
  * Created by luke on 2016-04-20.
  */
 public class ScrPlay implements Screen, InputProcessor {
-    Main main;
+    com.mygdx.eggbandit.Main main;
     TbsMenu tbsMenu;
     Stage stage;
     SpriteBatch sbChar;
@@ -51,12 +50,12 @@ public class ScrPlay implements Screen, InputProcessor {
     Animation aniIdle, aniRun, aniFly, aniGrab;
     Animation aniIdleFlip, aniRunFlip, aniFlyFlip, aniGrabFlip;
 
-    public ScrPlay(Main main) {  //Referencing the main class.
+    public ScrPlay(com.mygdx.eggbandit.Main main) {  //Referencing the main class.
         this.main = main;
     }
 
     public void show() {
-        backgroundTexture = new Texture("backgrounds/Play.jpg");
+        backgroundTexture = new Texture("backgrounds/Play.png");
         backgroundSprite = new Sprite(backgroundTexture);
         mJump = Gdx.audio.newMusic(Gdx.files.internal("sounds/jump.mp3"));
         mInGameSong = Gdx.audio.newMusic(Gdx.files.internal("music/ingame1v2.mp3"));
@@ -110,7 +109,7 @@ public class ScrPlay implements Screen, InputProcessor {
         //idle animations
         txrIdleSheet = new Texture("character/character_idle.png");
         TextureRegion[][] trIdleTemp = TextureRegion.split(txrIdleSheet, 220, 240),
-        trIdleTempFlip = TextureRegion.split(txrIdleSheet, 220, 240);
+                trIdleTempFlip = TextureRegion.split(txrIdleSheet, 220, 240);
         trIdleFrames = new TextureRegion[8];
         trIdleFlipFrames = new TextureRegion[8];
         int nIdle = 0;
@@ -213,7 +212,11 @@ public class ScrPlay implements Screen, InputProcessor {
             nCounter = -1;
         }
         obstacles.draw(sbChar);
-        bmNests.draw(sbChar, Integer.toString(obstacles.nNests), nWid - 200, nHei - 50);
+        if (obstacles.nNests >= 0 && obstacles.nNests <= 9) {
+            bmNests.draw(sbChar, Integer.toString(obstacles.nNests), nWid - 200, nHei - 50);
+        } else if (obstacles.nNests >= 10) {
+            bmNests.draw(sbChar, Integer.toString(obstacles.nNests), nWid - 300, nHei - 50);
+        }
         if (fTimer > 0 && fTimer < 3) {
             bmStart.draw(sbChar, Integer.toString(nCounter), 800, 800);
         } else {
@@ -277,9 +280,8 @@ public class ScrPlay implements Screen, InputProcessor {
             if (picID == 1) {
                 sbChar.draw(aniIdle.getKeyFrame(faniTimer, true), character.recHB.getX(),
                         character.recHB.getY());
-            }
-            else if (picID == 2) {
-                sbChar.draw(aniIdleFlip.getKeyFrame(faniTimer,true), character.recHB.getX(),
+            } else if (picID == 2) {
+                sbChar.draw(aniIdleFlip.getKeyFrame(faniTimer, true), character.recHB.getX(),
                         character.recHB.getY());
             }
         }
@@ -288,8 +290,7 @@ public class ScrPlay implements Screen, InputProcessor {
         if (!character.isGrounded && picID == 1 && obstacles.isGrabable) {
             sbChar.draw(aniFly.getKeyFrame(faniTimer, true), character.recHB.getX(),
                     character.recHB.getY());
-        }
-        else if (!character.isGrounded && picID == 2 && obstacles.isGrabable) {
+        } else if (!character.isGrounded && picID == 2 && obstacles.isGrabable) {
             sbChar.draw(aniFlyFlip.getKeyFrame(faniTimer, true), character.recHB.getX(),
                     character.recHB.getY());
         }
@@ -303,8 +304,7 @@ public class ScrPlay implements Screen, InputProcessor {
             obstacles.isAnimate = false;
             sbChar.draw(aniGrab.getKeyFrame(faniTimer, false), character.recHB.getX(),
                     character.recHB.getY());
-        }
-        else if (!obstacles.isGrabable && picID == 2) {
+        } else if (!obstacles.isGrabable && picID == 2) {
             obstacles.isAnimate = false;
             sbChar.draw(aniGrabFlip.getKeyFrame(faniTimer, false), character.recHB.getX(),
                     character.recHB.getY());
@@ -329,7 +329,7 @@ public class ScrPlay implements Screen, InputProcessor {
                 main.prefsSCORE.putInteger("Latest Highscore", obstacles.nNests);
             }
             // hurt sound
-            main.currentState = Main.GameState.OVER;
+            main.currentState = com.mygdx.eggbandit.Main.GameState.OVER;
             main.updateState();
             mInGameSong.stop();
         }
@@ -348,32 +348,6 @@ public class ScrPlay implements Screen, InputProcessor {
     }
 
     @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public void dispose() {
-        sbChar.dispose();
-        bmNests.dispose();
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
     public boolean keyDown(int keycode) {
         return false;
     }
@@ -385,6 +359,11 @@ public class ScrPlay implements Screen, InputProcessor {
 
     @Override
     public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         return false;
     }
 
@@ -406,5 +385,25 @@ public class ScrPlay implements Screen, InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         return false;
+    }
+
+    @Override
+    public void dispose() {
+        sbChar.dispose();
+        bmNests.dispose();
+    }
+
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
     }
 }

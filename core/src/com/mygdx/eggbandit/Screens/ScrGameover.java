@@ -1,8 +1,9 @@
-package com.mygdx.game.Screens;
+package com.mygdx.eggbandit.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -15,54 +16,69 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.game.Main;
-import com.mygdx.game.Obstacles;
-import com.mygdx.game.TbMenu;
-import com.mygdx.game.TbsMenu;
+import com.mygdx.eggbandit.Obstacles;
+import com.mygdx.eggbandit.TbMenu;
+import com.mygdx.eggbandit.TbsMenu;
 
 /**
  * Created by luke on 2016-04-20.
  */
-public class ScrInstruct implements Screen, InputProcessor {
-    Main main;
+public class ScrGameover implements Screen, InputProcessor {
+    com.mygdx.eggbandit.Main main;
     TbsMenu tbsMenu;
-    TbMenu tbMenu;
+    TbMenu tbMenu, tbPlay;
     Stage stage;
     SpriteBatch batch;
-    BitmapFont screenName;
+    BitmapFont screenName, bmScore, bmHighscore, bmStart;
     Obstacles obstacles;
+    com.mygdx.eggbandit.Screens.ScrPlay scrPlay;
+    Music mGameover;
+    int nHei = 1080, nWid = 1920, nCounter = 3;
     public static Texture backgroundTexture;
     public static Sprite backgroundSprite;
     float fGameworldWidth = 1920, fGameworldHeight = 1080;
     OrthographicCamera ocCam;
     Viewport viewport;
 
-    public ScrInstruct(Main main) {  //Referencing the main class.
+    public ScrGameover(com.mygdx.eggbandit.Main main) {  //Referencing the main class.
         this.main = main;
     }
 
     public void show() {
-        backgroundTexture = new Texture("backgrounds/instructions.jpg");
+        mGameover = Gdx.audio.newMusic(Gdx.files.internal("music/gameover.mp3"));
+        mGameover.play();
+        mGameover.setLooping(true);
+        backgroundTexture = new Texture("backgrounds/gameover.jpg");
         backgroundSprite = new Sprite(backgroundTexture);
         stage = new Stage();
         tbsMenu = new TbsMenu();
         batch = new SpriteBatch();
         obstacles = new Obstacles();
         screenName = new BitmapFont(Gdx.files.internal("fonts/8bit.fnt"));
-        screenName.getData().setScale(2, 2);
-        screenName.setColor(Color.WHITE);
+        screenName.getData().setScale(5, 5);
+        screenName.setColor(Color.BLACK);
+        bmScore = new BitmapFont(Gdx.files.internal("fonts/8bit.fnt"));
+        bmScore.getData().setScale(2, 2);
+        bmHighscore = new BitmapFont(Gdx.files.internal("fonts/8bit.fnt"));
+        bmHighscore.getData().setScale(2, 2);
         ocCam = new OrthographicCamera();
         ocCam.setToOrtho(false);
         viewport = new FillViewport(fGameworldWidth, fGameworldHeight, ocCam);
         viewport.apply();
         ocCam.position.set(fGameworldWidth / 2, fGameworldHeight / 2, 0);
-        tbMenu = new TbMenu("BACK", tbsMenu);
+        tbMenu = new TbMenu("MENU", tbsMenu);
+        tbPlay = new TbMenu("RETRY", tbsMenu);
         tbMenu.setSize(Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() / 4);
-        tbMenu.setY(Gdx.graphics.getHeight() / 18);
-        tbMenu.setX(Gdx.graphics.getWidth() / 14);
+        tbMenu.setY(Gdx.graphics.getHeight() / 9);
+        tbMenu.setX(Gdx.graphics.getWidth() / 2);
+        tbPlay.setSize(Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() / 4);
+        tbPlay.setY(Gdx.graphics.getHeight() / 9);
+        tbPlay.setX(Gdx.graphics.getWidth() / 6);
         stage.addActor(tbMenu);
+        stage.addActor(tbPlay);
         Gdx.input.setInputProcessor(stage);
         btnMenuListener();
+        btnPlayListener();
     }
 
     public void renderBackground() {
@@ -82,7 +98,9 @@ public class ScrInstruct implements Screen, InputProcessor {
         batch.setProjectionMatrix(ocCam.combined);
         batch.begin();
         renderBackground();
-        screenName.draw(batch, "INSTRUCTIONS", 550, 1000);
+        screenName.draw(batch, "GAMEOVER", 350, 1000);
+        bmScore.draw(batch, "SCORE: " + Integer.toString(obstacles.nNests), 700, 750);
+        bmHighscore.draw(batch, "HIGH-SCORE: " + main.prefsSCORE.getInteger("Latest Highscore"), 500, 600);
         batch.end();
         stage.act();
         stage.draw();
@@ -91,9 +109,21 @@ public class ScrInstruct implements Screen, InputProcessor {
     public void btnMenuListener() {
         tbMenu.addListener(new ChangeListener() {
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-                main.currentState = Main.GameState.MENU;
+                main.currentState = com.mygdx.eggbandit.Main.GameState.MENU;
                 main.updateState();
                 obstacles.nNests = 0;
+                mGameover.stop();
+            }
+        });
+    }
+
+    public void btnPlayListener() {
+        tbPlay.addListener(new ChangeListener() {
+            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+                main.currentState = com.mygdx.eggbandit.Main.GameState.PLAY;
+                main.updateState();
+                obstacles.nNests = 0;
+                mGameover.stop();
             }
         });
     }
@@ -101,6 +131,8 @@ public class ScrInstruct implements Screen, InputProcessor {
     @Override
     public void dispose() {
         batch.dispose();
+        bmScore.dispose();
+        bmHighscore.dispose();
     }
 
     @Override

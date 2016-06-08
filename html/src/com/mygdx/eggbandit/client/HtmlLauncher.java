@@ -1,9 +1,9 @@
-package com.mygdx.game.client;
+package com.mygdx.eggbandit.client;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import com.mygdx.game.Main;
+import com.mygdx.eggbandit.Main;
 
 public class HtmlLauncher extends GwtApplication {
 

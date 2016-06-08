@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.eggbandit;
 
 import android.os.Bundle;
 
@@ -10,6 +10,6 @@ public class AndroidLauncher extends AndroidApplication {
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		initialize(new Main(), config);
+		initialize(new com.mygdx.eggbandit.Main(), config);
 	}
 }

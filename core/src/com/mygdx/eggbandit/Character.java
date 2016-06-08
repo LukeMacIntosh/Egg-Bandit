@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.eggbandit;
 
 import com.badlogic.gdx.math.Rectangle;
 
