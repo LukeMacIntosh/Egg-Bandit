@@ -250,32 +250,52 @@ public class ScrPlay implements Screen, InputProcessor {
             character.action(3, nWid - 10, 0);
         }
 
-        //Android Controls & Animation Conditions
+        //Android Controls & Running Animation Conditions
         sbChar.begin();
         if (Gdx.input.isTouched(0) && Gdx.input.getX(0) < Gdx.graphics.getWidth() / 2
                 || Gdx.input.isTouched(1) && Gdx.input.getX(1) < Gdx.graphics.getWidth() / 2) {
             character.moveLeft(Gdx.graphics.getDeltaTime());
             if (character.isGrounded) {
-                sbChar.draw(aniRunFlip.getKeyFrame(faniTimer, true), character.recHB.getX(),
-                        character.recHB.getY());
+                if (Gdx.input.isTouched(0) && Gdx.input.isTouched(1)) {
+                } else {
+                    sbChar.draw(aniRunFlip.getKeyFrame(faniTimer, true), character.recHB.getX(),
+                            character.recHB.getY());
+                    picID = 2;
+                }
             }
-            if (Gdx.input.isTouched(0) && Gdx.input.isTouched(1)) {
-            } else {
-                picID = 2;
+            else {
+                if (Gdx.input.isTouched(0) && Gdx.input.isTouched(1)) {
+
+                }
+                else {
+                    picID = 2;
+                }
             }
         }
         if (Gdx.input.isTouched(0) && Gdx.input.getX(0) > Gdx.graphics.getWidth() / 2
                 || Gdx.input.isTouched(1) && Gdx.input.getX(1) > Gdx.graphics.getWidth() / 2) {
             character.moveRight(Gdx.graphics.getDeltaTime());
             if (character.isGrounded) {
-                sbChar.draw(aniRun.getKeyFrame(faniTimer, true), character.recHB.getX(),
-                        character.recHB.getY());
+                if (Gdx.input.isTouched(0) && Gdx.input.isTouched(1)) {
+                    sbChar.draw(aniIdle.getKeyFrame(faniTimer, true), character.recHB.getX(),
+                            character.recHB.getY());
+                } else {
+                    sbChar.draw(aniRun.getKeyFrame(faniTimer, true), character.recHB.getX(),
+                            character.recHB.getY());
+                    picID = 1;
+                }
             }
-            if (Gdx.input.isTouched(0) && Gdx.input.isTouched(1)) {
-            } else {
-                picID = 1;
+            else {
+                if (Gdx.input.isTouched(0) && Gdx.input.isTouched(1)) {
+
+                }
+                    else {
+                    picID = 1;
+                }
             }
         }
+
+        //idle animations
         if (!Gdx.input.isTouched() && character.isGrounded) {
             if (picID == 1) {
                 sbChar.draw(aniIdle.getKeyFrame(faniTimer, true), character.recHB.getX(),
@@ -310,18 +330,26 @@ public class ScrPlay implements Screen, InputProcessor {
                     character.recHB.getY());
         }
 
-        sbChar.end();
 
 
         //Keyboard Controls
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            if (character.isGrounded && aniRun.isAnimationFinished(faniTimer)) {
+                sbChar.draw(aniRunFlip.getKeyFrame(faniTimer, true), character.recHB.getX(),
+                        character.recHB.getY());
+            }
             character.moveLeft(Gdx.graphics.getDeltaTime());
             picID = 2;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            if (character.isGrounded && aniRunFlip.isAnimationFinished(faniTimer)) {
+                sbChar.draw(aniRun.getKeyFrame(faniTimer, true), character.recHB.getX(),
+                        character.recHB.getY());
+            }
             character.moveRight(Gdx.graphics.getDeltaTime());
             picID = 1;
         }
+        sbChar.end();
 
         //Bird hit detection, goes to game over screen
         if (obstacles.bounds(character.recHB)) {

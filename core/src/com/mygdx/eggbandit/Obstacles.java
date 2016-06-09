@@ -36,7 +36,7 @@ public class Obstacles {
         recNestBox = new Rectangle(0f, 0f, sprNest.getWidth(), sprNest.getHeight());
         //recNestBox.x = (int) Math.floor(Math.random() * (nWid - sprNest.getWidth() + 1));
         recNestBox.x = nWid / 2 - sprNest.getWidth() / 2 + nNestLen;
-        recNestBox.y = nHei * 3 / 4 + nNestLen;
+        recNestBox.y = nHei * 3 / 4 + 50;
         sprNest.setPosition(recNestBox.x - nNestLen, recNestBox.y - nNestLen);
 
         //range for random Bird y coordinates
