@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -18,9 +19,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.eggbandit.Character;
 import com.mygdx.eggbandit.Obstacles;
 import com.mygdx.eggbandit.TbsMenu;
-import com.mygdx.eggbandit.Character;
 
 /**
  * Created by luke on 2016-04-20.
@@ -36,7 +37,8 @@ public class ScrPlay implements Screen, InputProcessor {
     Character character;
     Obstacles obstacles;
     Viewport viewport;
-    Music mJump, mInGameSong;
+    Music mInGameSong;
+    Sound mJump;
     float fGameworldWidth = 1920, fGameworldHeight = 1080;
     int picID = 1, nHei = 1080, nWid = 1920, nTouchCount = 0, nCounter = 0;
     boolean isTouchingL = false, isTouchingR = false;
@@ -57,7 +59,7 @@ public class ScrPlay implements Screen, InputProcessor {
     public void show() {
         backgroundTexture = new Texture("backgrounds/Play.png");
         backgroundSprite = new Sprite(backgroundTexture);
-        mJump = Gdx.audio.newMusic(Gdx.files.internal("sounds/jump.mp3"));
+        mJump = Gdx.audio.newSound(Gdx.files.internal("sounds/jump.mp3"));
         mInGameSong = Gdx.audio.newMusic(Gdx.files.internal("music/ingame1v2.mp3"));
         mInGameSong.play();
         mInGameSong.setLooping(true);
@@ -391,6 +393,8 @@ public class ScrPlay implements Screen, InputProcessor {
     public void dispose() {
         sbChar.dispose();
         bmNests.dispose();
+        mInGameSong.dispose();
+        mJump.dispose();
     }
 
     @Override
