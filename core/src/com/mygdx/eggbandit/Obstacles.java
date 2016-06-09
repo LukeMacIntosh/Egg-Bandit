@@ -2,19 +2,21 @@ package com.mygdx.eggbandit;
 
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
-public class Obstacles {
+public class Obstacles implements Screen, InputProcessor{
     public static int nNests = 0;
     Rectangle recNestBox;
     public Sprite sprNest;
     Texture txrBird, txrNest;
-    Music mNestcollected, mBirdhit;
+    Sound mNestcollected, mBirdhit;
     int nBirdStatus, nNestStatus, nRan, nLowRange, nHighRange;
     int nHei = 1080, nWid = 1920, nBirdLen, nNestLen;
     float fX, fY;
@@ -28,8 +30,8 @@ public class Obstacles {
         nBirdLen = 125;
         nNestLen = 0;
 
-        mNestcollected = Gdx.audio.newMusic(Gdx.files.internal("sounds/nestcollected.mp3"));
-        mBirdhit = Gdx.audio.newMusic(Gdx.files.internal("sounds/birdhit.wav"));
+        mNestcollected = Gdx.audio.newSound(Gdx.files.internal("sounds/nestcollected.mp3"));
+        mBirdhit = Gdx.audio.newSound(Gdx.files.internal("sounds/birdhit.wav"));
         txrNest = new Texture("obstacles/nestsprite.png");
         sprNest = new Sprite(txrNest, 0, 0, 200, 110);
         //sprNest.setSize(256, 256);
@@ -118,5 +120,81 @@ public class Obstacles {
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
+    }
+
+    @Override
+    public void show() {
+
+    }
+
+    @Override
+    public void render(float delta) {
+
+    }
+
+    @Override
+    public void resize(int width, int height) {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public void dispose() {
+        mBirdhit.dispose();
+        mNestcollected.dispose();
     }
 }

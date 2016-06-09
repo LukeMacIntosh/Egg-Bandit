@@ -133,6 +133,7 @@ public class ScrGameover implements Screen, InputProcessor {
         batch.dispose();
         bmScore.dispose();
         bmHighscore.dispose();
+        mGameover.dispose();
     }
 
     @Override
