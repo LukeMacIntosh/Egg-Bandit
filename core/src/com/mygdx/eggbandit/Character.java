@@ -11,8 +11,8 @@ public class Character {
 
 
     public Character() {
-        recHB = new Rectangle(0f, 0f, nWid / 10,
-                nHei / 10);
+        recHB = new Rectangle(0f, 0f, nWid / 12,
+                nHei / 8);
         fGravity = 0;
     }
 
